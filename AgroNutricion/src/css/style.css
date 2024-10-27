@@ -523,36 +523,36 @@ ul.btn li:last-child {
 /** end three_box section **/
 
 
-/** hottest section **/
+/** flow section **/
 
-.hottest {
+.flow {
      background: #fff;
      padding: 90px 0 0px 0;
 }
 
-.hottest .titlepage {
+.flow .titlepage {
      padding-bottom: 0;
      text-align: left;
 }
 
-.hottest .titlepage h2 {
+.flow .titlepage h2 {
      color: #000;
 }
 
-.hottest .hottest_box {
+.flow .flow_box {
      position: relative;
      background-color: #90f41e;
      padding: 60px 40px;
 }
 
-.hottest .hottest_box p {
+.flow .flow_box p {
      color: #fff;
      font-size: 20px;
      line-height: 32px;
      font-weight: 500;
 }
 
-.hottest_box h3{
+.flow_box h3{
      color: rgb(255, 255, 255);
      background-color: #49a2d6;
      border: 3px outset rgb(82, 215, 255);
@@ -561,12 +561,12 @@ ul.btn li:last-child {
      font-size: 20px;
      margin-bottom: 20px;
 }
-.hottest_box h3 li{
+.flow_box h3 li{
      color: rgb(0, 217, 255);
 }
 
 
-/** end hottest section **/
+/** end flow section **/
 
 
 /** choose  section **/
@@ -652,6 +652,7 @@ ul.btn li:last-child {
      color: #fff;
      font-size: 20px;
      line-height: 30px;
+     text-align: justify;
 }
 
 .padding_bottom {
