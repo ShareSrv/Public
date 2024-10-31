@@ -143,6 +143,12 @@ img {
      height: auto;
 }
 
+h3>img.anxImg{
+     margin-top: 7px;
+     border: 3px inset rgb(0, 195, 255);
+     border-radius: 5px;
+}
+
  :focus {
      outline: 0;
 }
