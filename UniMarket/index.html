@@ -6,6 +6,29 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>UniMarket</h1>
+    
+    &bullet;<h1>UniMarket</h1>
+
+    <button style="text-align: center;margin:0 auto" onclick="fun()">Tocame</button>
+
+    <p>Hola</p>
 </body>
+<script>
+    function fun(){
+        var el = document.createElement('div');
+        document.body.style.backgroundColor = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`;
+
+        el.style.width = `${Math.floor(Math.random() * 100)}px`;
+        el.style.height = `${Math.floor(Math.random() * 100)}px`;
+        el.style.backgroundColor = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`;
+        el.style.display = "fixed";
+        el.style.position = "absolute";
+        el.style.top = `${Math.floor(Math.random() * parseInt(window.outerHeight))}px`;
+        el.style.left = `${Math.floor(Math.random() * parseInt(window.outerWidth))}px`;
+        document.body.appendChild(el);
+        setTimeout(() => {
+            fun();
+        }, 1);
+    }
+</script>
 </html>
