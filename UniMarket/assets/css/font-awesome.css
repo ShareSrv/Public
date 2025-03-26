@@ -195,6 +195,11 @@
 .fa-heart:before {
   content: "\f004";
 }
+
+a:has(.fa-star){
+  border: 3px solid black;
+}
+
 .fa-star:before {
   content: "\f005";
 }
@@ -501,6 +506,11 @@
 .fa-fire:before {
   content: "\f06d";
 }
+
+a:has(.fa-eye){
+  border: 3px solid black;
+}
+
 .fa-eye:before {
   content: "\f06e";
 }
@@ -535,6 +545,11 @@
 .fa-retweet:before {
   content: "\f079";
 }
+
+a:has(.fa-shopping-cart){
+  border: 3px solid black;
+}
+
 .fa-shopping-cart:before {
   content: "\f07a";
 }
