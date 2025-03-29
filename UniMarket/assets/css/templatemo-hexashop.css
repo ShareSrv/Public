@@ -1635,7 +1635,6 @@ Products Page
 
 .page-heading {
   margin-top: 100px;
-  margin-bottom: 30px;
   background-image: url(../images/bg2.png);
   background-position: center center;
   background-size: 35%;
@@ -1664,19 +1663,22 @@ Products Page
 #products {
   background-image: url(../images/bg3.png);
   border-bottom: 5px dashed #292929;
+  padding: 75px;
 }
 
 #products .section-heading {
   text-align: center;
-  margin-bottom: 30px;
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 #products .container{
   background: linear-gradient(rgba(48, 48, 48, 0.7), rgba(34, 34, 34, 0.7));
-  padding: 30px;
-  margin-top: -30px;
-  margin-bottom: -90px;
+  border-right: 5px inset #4b4b4b;
+  border-bottom: 5px inset #3f3f3f;
+  border-radius: 5px;
+  padding: 35px;
+  padding-bottom: 0px;
 }
 
 #products .item {
