@@ -169,7 +169,7 @@ div.navbar button:hover {
 .bg > div {
   width: 80%;
   height: 100%;
-  background: url(/C/img/bg.jpg);
+  background: url(img/bg.jpg);
   filter: blur(0.5px) grayscale(0.3) brightness(0.86) contrast(1.5);
   box-shadow: #4aa4c0 0px 0px 25px;
   background-size: cover;
