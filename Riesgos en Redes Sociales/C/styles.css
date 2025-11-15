@@ -185,6 +185,17 @@ div.navbar button:hover {
   }
 }
 
+.img-dv {
+  position: static;
+  text-align: center;
+  margin-top: -35px;
+}
+
+.img-dv img {
+  max-width: 10rem;
+  height: auto;
+}
+
 div.footer {
   text-align: center;
   position: static;
