@@ -9,55 +9,89 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Numans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="C/styles.css">
     <link rel="shortcut icon" href="C/img/icon.ico" type="image/x-icon">
 </head>
 
 <body>
-    <div class="navbar">
-        <div class="navbar-left">
-            <button onclick="goTo('introduccion')">Riesgos en Redes Sociales</button>
+    <div class="navbar-container">
+        <div class="navbar">
+            <div class="navbar-left">
+                <button onclick="globalThis.scrollTo(0, 0);">Riesgos en Redes Sociales</button>
+            </div>
+            <div class="navbar-right">
+                <button onclick="goTo('riesgos')">Los Riesgos</button>
+                <div class="vline"></div>
+                <button onclick="goTo('datos')">Datos del Estudio</button>
+                <div class="vline"></div>
+                <button onclick="goTo('prevencion')">Protección</button>
+                <div class="vline"></div>
+                <button onclick="goTo('contacto')">Sobre el Proyecto</button>
+            </div>
         </div>
-        <div class="navbar-right">
-            <button onclick="goTo('riesgos')">Los Riesgos</button>
-            <button onclick="goTo('datos')">Datos del Estudio</button>
-            <button onclick="goTo('prevencion')">Prevención</button>
-            <button onclick="goTo('contacto')">Sobre el Proyecto</button>
-        </div>
+    </div>
+    <div class="lIcon-container">
+        <img src="C/img/lIcon.png" alt="Modo oscuro">
+    </div>
+
+    <div class="rIcon-container">
+        <img src="C/img/rIcon.png" alt="Ir arriba">
     </div>
 
     <div class="bg">
-        <div></div>
+        <div class="bg1"></div>
+        <div class="bg2"></div>
     </div>
 
     <div class="container main-content">
 
         <div class="row" id="introduccion">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="vcenter">
-                    <div class="textbox intro">
-                        <h2 class="text-center">Nuestra Vida Digital</h2>
-                        <p>Las redes sociales ya no son una herramienta externa; son una extensión de nuestra vida
-                            social.
-                            En el CTP Turrubares, la realidad no es diferente. Un estudio realizado en 2025 con
-                            estudiantes de cuarto ciclo reveló que plataformas como <strong>WhatsApp, Instagram y
-                                TikTok</strong> dominan nuestra forma de interactuar.</p>
-                        <p>Esta inmersión constante nos expone a un entorno que, si bien está lleno de oportunidades,
-                            también presenta amenazas complejas. La investigación demostró que aunque tenemos
-                            una <strong>alta percepción del peligro</strong>, existe una <strong>brecha de conocimiento
-                                alarmante</strong>. No siempre sabemos identificar o nombrar las amenazas específicas.
-                        </p>
-                        <p>Este blog nace de esa necesidad. Su objetivo es tomar los datos de esa investigación y
-                            convertirlos en un recurso claro y accionable para ti. Queremos cerrar esa brecha entre
-                            "saber que hay peligro" y "entender cómo funciona ese peligro".</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="textbox intro text-center">
+                                <h2 class="text-center">Nuestra Vida Digital</h2>
+                                <p>Las redes sociales ya no son una herramienta externa; son una extensión de nuestra
+                                    vida
+                                    social.
+                                    En el CTP Turrubares, la realidad no es diferente. Un estudio realizado en 2025 con
+                                    estudiantes de cuarto ciclo reveló que plataformas como <strong>WhatsApp, Instagram
+                                        y
+                                        TikTok</strong> dominan nuestra forma de interactuar.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="textbox intro">
+                                <p>Esta inmersión constante nos expone a un entorno que, si bien está lleno de
+                                    oportunidades,
+                                    también presenta amenazas complejas. La investigación demostró que aunque
+                                    tenemos
+                                    una <strong>alta percepción del peligro</strong>, existe una <strong>brecha de
+                                        conocimiento
+                                        alarmante</strong>. No siempre sabemos identificar o nombrar las amenazas
+                                    específicas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="textbox intro">
+                                <p>Este blog nace de esa necesidad. Su objetivo es tomar los datos de esa investigación
+                                    y
+                                    convertirlos en un recurso claro y accionable para ti. Queremos cerrar esa brecha
+                                    entre
+                                    <strong>"saber que hay peligro"</strong> y <strong>"entender cómo funciona ese
+                                        peligro"</strong>.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-
             </div>
             <div class="col-md-5">
                 <div class="vcenter">
@@ -69,200 +103,420 @@
         <hr>
 
         <div class="row" id="riesgos">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <div class="textbox v1">
-                    <h2 class="text-center">Los Riesgos:</h2>
-                    <h2 class="text-center"> ¿A Qué Nos Enfrentamos?</h2>
-                    <p class="text-center">El estudio clasificó los peligros en dos grandes grupos: los que usan engaños
-                        técnicos (ciberseguridad) y los que se basan en la interacción humana malintencionada.</p>
-                </div>
-            </div>
-            <div class="col-md-3"></div>
-            <div class="spacing-2"></div>
+            <div class="col-md-12">
+                <div class="vcenter">
 
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <div class="textbox v2">
-                    <h3>1. El Engaño Técnico (Riesgos de Ciberseguridad)</h3>
-                    <p>Estos ataques no buscan vulnerar el software, sino al usuario. Usan la manipulación psicológica
-                        (ingeniería social) para que tú mismo les entregues el acceso.</p>
-                </div>
-            </div>
-            <div class="spacing-1"></div>
+                    <div class="row" id="riesgos-control">
+                        <div class="col-md-4">
+                            <div class="textbox v1">
+                                <h2>Los Riesgos:</h2>
+                                <h2> ¿A Qué Nos Enfrentamos?</h2>
+                                <p>El estudio clasificó los peligros en dos grandes grupos: los que usan
+                                    <strong>engaños
+                                        técnicos (ciberseguridad)</strong> y los que se basan en la <strong>interacción
+                                        humana
+                                        malintencionada.</strong>
+                                </p>
+                                <p>Haz click en los cuadros para verlos.</p>
+                            </div>
+                        </div>
 
-            <div class="col-md-6">
-                <div class="textbox v3">
-                    <h4>Estafas en Línea (Scams)</h4>
-                    <p>Son fraudes que buscan un beneficio económico directo y se adaptan a nuestros intereses:</p>
-                    <ul>
-                        <li><strong>Estafas de Videojuegos:</strong> Promesas de moneda virtual gratuita (V-Bucks,
-                            Robux) o
-                            "skins" raras a cambio de los datos de tu cuenta.</li>
-                        <li><strong>Falsos Premios y Sorteos:</strong> Notificaciones de que ganaste un iPhone, una
-                            tarjeta
-                            de regalo o productos similares. Usualmente te piden un "pequeño pago" para "gastos
-                            de
-                            envío" o tus datos bancarios.</li>
-                        <li><strong>Tiendas Fraudulentas:</strong> Publicidad en TikTok e Instagram de productos
-                            (zapatos, ropa, tecnología) a precios increíblemente bajos. La víctima paga y el producto
-                            nunca llega.</li>
-                    </ul>
-
-                    <div class="text-center">
-                        <img id="img3" src="C/img/img3.jpg" alt="Ejemplo de mensaje de Phishing" class="img-fluid">
+                        <div class="col-md-2">
+                            <div class="vcenter">
+                                <div class="textButton" id="riesgos1Button">
+                                    <h2>Riesgos técnicos<br><br></h2>
+                                    <img src="C/img/dIcon.png" alt="Riesgos técnicos">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="vcenter">
+                                <div class="textButton" id="riesgos2Button">
+                                    <h2>Riesgos sociales y de conducta</h2>
+                                    <img src="C/img/dIcon.png" alt="Riesgos sociales">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-center small"><em>(Ejemplo de estafa "oferta única")</em></p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="textbox v4">
-                    <h4>Phishing (Suplantación de Identidad)</h4>
-                    <p>Es el método más común. Los atacantes envían un correo o mensaje
-                        haciéndose pasar por una entidad legítima (Instagram, Netflix, tu banco, el MEP, etc.).</p>
-                    <p>El mensaje siempre crea un sentido de <strong>urgencia o miedo</strong>: "Tu cuenta ha sido
-                        comprometida", "Detectamos un inicio de sesión sospechoso", "Ganaste un premio". </p>
-                    <p>El objetivo es
-                        que
-                        hagas clic en un enlace que te lleva a una <strong>página web falsa</strong>
-                        que es visualmente idéntica a la real. Al introducir tu usuario y contraseña, no inicias sesión,
-                        sino que le envías tus datos directamente al atacante.</p>
+                    <div class="row hidden" id="riesgos1-control">
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <div class="row mx-auto">
+                                    <div class="col-md-8">
+                                        <h4>Estafas en Línea (Scams)</h4>
+                                        <p>Son fraudes que buscan un beneficio económico directo y se adaptan a nuestros
+                                            intereses:</p>
+                                        <ul>
+                                            <li>
+                                                <p><strong>Estafas de videojuegos:</strong> Promesas de moneda virtual
+                                                    gratuita
+                                                    (V-Bucks,
+                                                    Robux) o
+                                                    "skins" raras a cambio de los datos de tu cuenta.</p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Falsos premios y sorteos:</strong> Notificaciones de que
+                                                    ganaste
+                                                    un
+                                                    iPhone, una
+                                                    tarjeta
+                                                    de regalo o productos similares. Usualmente te piden un "pequeño
+                                                    pago"
+                                                    para
+                                                    "gastos
+                                                    de
+                                                    envío" o tus datos bancarios.</p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Tiendas fraudulentas:</strong> Publicidad en TikTok e
+                                                    Instagram
+                                                    de
+                                                    productos
+                                                    (zapatos, ropa, tecnología) a precios increíblemente bajos. La
+                                                    víctima
+                                                    paga
+                                                    y el
+                                                    producto
+                                                    nunca llega.</p>
+                                            </li>
+                                        </ul>
 
-                    <div class="text-center">
-                        <img id="img2" src="C/img/img2.jpg" alt="Ejemplo de mensaje de Phishing" class="img-fluid">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="vcenter">
+                                            <img id="img3" src="C/img/img3.jpg" alt="Ejemplo de oferta estafa"
+                                                class="img-fluid zoom">
+
+                                            <p class="text-center small"><em>Ejemplo de "oferta" estafa.</em></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <div class="row mx-auto">
+                                    <div class="col-md-8">
+                                        <h4>Phishing (Suplantación de Identidad)</h4>
+                                        <p>Es el método más común. Los atacantes envían un correo o mensaje
+                                            sospechoso <strong>haciéndose pasar por una entidad legítima</strong>
+                                            (Instagram, Netflix, tu banco, el
+                                            MEP,
+                                            etc.).</p>
+                                        <p>El mensaje siempre crea un sentido de <strong>urgencia o miedo</strong>: "Tu
+                                            cuenta
+                                            ha sido
+                                            comprometida", "Detectamos un inicio de sesión sospechoso", "Ganaste un
+                                            premio".
+                                        </p>
+                                        <p>El objetivo es
+                                            que
+                                            hagas clic en un enlace que te lleva a una <strong>página web falsa</strong>
+                                            que es visualmente idéntica a la real. Al introducir tu usuario y
+                                            contraseña, no
+                                            inicias
+                                            sesión,
+                                            sino que le <strong>envías tus datos directamente al atacante</strong>.</p>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="vcenter">
+                                            <img id="img2" src="C/img/img2.jpg" alt="Ejemplo de mensaje de Phishing"
+                                                class="img-fluid zoom">
+
+                                            <p class="text-center small"><em>Ejemplo de alerta falsa.
+                                                    <br>Fuente:
+                                                    PROTEGE.LA</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-center small"><em>(Ejemplo de un mensaje de Phishing) <br>Fuente: PROTEGE.LA</em></p>
-                </div>
-            </div>
-            <div class="spacing-3"></div>
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <div class="textbox v5">
-                    <h3>2. El Depredador Humano (Riesgos de Interacción y Conducta)</h3>
-                    <p>Estos riesgos surgen de la interacción social con otros usuarios malintencionados.</p>
-                </div>
-            </div>
-            <div class="spacing-1"></div>
-            <div class="col-md-6">
-                <div class="textbox v6">
-                    <h4>Acoso Digital (Stalking)</h4>
-                    <p>El acoso digital es una modalidad de <strong>persecución virtual y conducta intrusiva y
-                            repetitiva</strong>
-                        que busca generar miedo o angustia en la víctima. Implica una vigilancia sistemática y un
-                        seguimiento obsesivo que afecta la integridad psicológica y la sensación de seguridad del
-                        individuo.</p>
 
-                    <h5>Mecanismos de Control:</h5>
-                    <ul>
-                        <li><strong>Monitoreo y Vigilancia:</strong> Observación constante de la actividad digital de la
-                            víctima,
-                            registrando publicaciones y geolocalización para construir un perfil de vulnerabilidad.</li>
-                        <li><strong>Evasión y Suplantación:</strong> Creación de <strong>identidades falsas</strong> o
-                            perfiles alternos para
-                            evitar bloqueos, mantener el contacto y acceder a círculos sociales restringidos.</li>
-                        <li><strong>Contacto Invasivo:</strong> Envío persistente y no solicitado de comunicaciones
-                            (mensajes
-                            directos, correos) para forzar la interacción y mantener a la víctima en estado de alerta.
-                        </li>
-                        <li><strong>Escalada a la Difusión Privada:</strong> Amenaza o ejecución de la publicación de
-                            información,
-                            imágenes o datos personales de la víctima sin consentimiento, buscando la
-                            <strong>humillación
-                                pública</strong> y la coacción.
-                        </li>
-                    </ul>
+                    <div class="row hidden" id="riesgos2-control">
+                        <div class="col-md-6">
+                            <div class="textbox v3">
+                                <div class="row mx-auto">
+                                    <div class="col-md-8">
+                                        <h4>Acoso Digital (Stalking)</h4>
+                                        <p>El acoso digital consiste en una <strong>persecución virtual y conducta
+                                                intrusiva
+                                            </strong>
+                                            que busca afectar la integridad del
+                                            individuo mediante el seguimiento obsesivo y otras características:</p>
+
+                                        <ul>
+                                            <li>
+                                                <p><strong>Monitoreo y vigilancia:</strong> Observación constante de la
+                                                    actividad
+                                                    de la
+                                                    víctima,
+                                                    registrando publicaciones para construir un perfil
+                                                    de
+                                                    vulnerabilidad.
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Evasión y suplantación:</strong> Creación de
+                                                    identidades
+                                                    falsas
+                                                    para
+                                                    evitar bloqueos y mantener el contacto.
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Contacto invasivo:</strong> Envío persistente de mensajes o
+                                                    correos para forzar la interacción y mantener a la
+                                                    víctima en
+                                                    estado de
+                                                    alerta.
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Ataque:</strong> Amenaza o
+                                                    publicación
+                                                    de
+                                                    información,
+                                                    personal de la víctima,
+                                                    buscando
+                                                    la
+                                                    humillación.
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="vcenter">
+                                            <img id="img4" src="C/img/img17.jpg" alt="Stalking" class="img-fluid">
+
+                                            <p class="text-center small"><em>Los "Stalker" se suelen camuflar en
+                                                    Internet para no ser descubiertos.</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="textbox v3">
+                                <div class="row mx-auto">
+                                    <div class="col-md-8">
+                                        <h4>Grooming (Acoso Sexual de Adultos a Menores)</h4>
+                                        <p>Es el riesgo de interacción más severo y no es un evento, sino un
+                                            <strong>proceso
+                                                deliberado</strong>
+                                            de engaño. El "Groomer" suele seguir estas etapas para manipular
+                                            a un
+                                            menor:
+                                        </p>
+                                        <ol>
+                                            <li>
+                                                <p><strong>Identifica:</strong> Busca víctimas en redes sociales y
+                                                    detecta vulnerabilidades o soledad.</p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Gana confianza:</strong> Finge ser un par o un amigo
+                                                    comprensivo y se gana la confianza del menor.</p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Aisla:</strong> Intenta aislar al menor de su red de
+                                                    apoyo
+                                                    y
+                                                    mueve la
+                                                    conversación a
+                                                    un chat privado.</p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Accede:</strong> Normaliza la conversación
+                                                    sexual y
+                                                    pide fotos
+                                                    o
+                                                    videos íntimos (Sexting).</p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Extorsiona:</strong> Usa
+                                                    el material
+                                                    para
+                                                    extorsionar, pidiendo más o incluso dinero a cambio de no hacerlo
+                                                    público.
+                                                </p>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="vcenter">
+                                            <img id="img5" src="C/img/img16.jpg" alt="Sospechoso" class="img-fluid">
+
+                                            <p class="text-center small"><em>Debemos tener cuidado con quienes
+                                                    conversamos en redes
+                                                    sociales.</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="textbox v7">
-                    <h4>Grooming (Acoso Sexual de Adultos a Menores)</h4>
-                    <p>Es el riesgo de interacción más severo y no es un evento, sino un <strong>proceso
-                            deliberado</strong>
-                        de engaño. Un adulto (el "Groomer") sigue etapas predecibles para manipular a un menor:</p>
-                    <ol>
-                        <li><strong>Identificación:</strong> Busca víctimas en espacios públicos (comentarios de TikTok,
-                            juegos en línea) y detecta vulnerabilidad o soledad.</li>
-                        <li><strong>Ganar Confianza:</strong> Finge ser un par o un amigo comprensivo. Valida los
-                            sentimientos del menor y se gana su confianza.</li>
-                        <li><strong>Aislamiento:</strong> Intenta aislar al menor de su red de apoyo ("Tus padres no te
-                            entienden, yo sí", "No le cuentes a tus amigos, esto es solo nuestro"). Mueve la
-                            conversación a
-                            un chat privado (DM, WhatsApp).</li>
-                        <li><strong>Normalización y Petición:</strong> Normaliza la conversación sexual y pide fotos o
-                            videos íntimos (Sexting).</li>
-                        <li><strong>Extorsión (Sextorsión):</strong> Si el menor accede, el acosador usa ese material
-                            para
-                            extorsionar, pidiendo más material o dinero a cambio de no hacerlo público.</li>
-                    </ol>
-                </div>
-            </div>
         </div>
 
         <hr>
 
         <div class="row" id="datos">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <div class="textbox v2">
-                    <h2 class="text-center">Datos del Estudio: </h2>
-                    <h2 class="text-center">Resultados de la Investigación</h2>
-                    <p class="text-center">Los gráficos a continuación se obtuvieron
-                        mediante encuestas a 54 estudiantes de la población de cuarto ciclo del CTP Turrubares. Puedes
-                        pasar por encima de las imágenes para acercarlas.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="textbox v3">
+                        <h2 class="text-center">Datos del Estudio: </h2>
+                        <h2 class="text-center">Resultados de la Investigación</h2>
+                        <p class="text-center">Los gráficos a continuación se obtuvieron
+                            mediante encuestas a <strong>54 estudiantes</strong> de la población de cuarto ciclo del CTP
+                            Turrubares.
+                            Selecciona las imágenes para acercarlas.
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="spacing-2"></div>
-            <div class="col-md-4">
-                <div class="textbox v3">
-                    <h5>Redes más usadas</h5>
-                    <p>Muestra el dominio casi total de WhatsApp (90.7%), Instagram (90.7%) y TikTok (83.3%) en nuestra
-                        población estudiantil.</p>
-                    <img src="C/img/img4.png" alt="Redes más usadas" class="img-fluid">
+            <div class="row">
+                <div class="col-md-1">
+                    <div class="vcenter">
+                        <div class="textButton" id="leftJumpButton">
+                            <img src="C/img/dIcon.png" alt="Ir a la izquierda">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="textbox v4">
-                    <h5>Inmersión Digital</h5>
-                    <p>Revelan que la mayoría (57.4%) pasa más de 30 minutos por sesión y un 55.6% revisa las redes "muy
-                        frecuentemente".</p>
-                    <img src="C/img/img5.png" alt="Tiempo por sesión" class="img-fluid">
-                    <img src="C/img/img6.png" alt="Tiempo entre sesiones" class="img-fluid">
+
+                <div class="col-md-10">
+                    <div class="scroller v4">
+                        <div class="col-md-2 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Redes más usadas</h5>
+                                <p>Se demuestra el dominio casi total de <strong>WhatsApp</strong> (90.7%),
+                                    <strong>Instagram</strong> (90.7%) y <strong>TikTok</strong>
+                                    (83.3%)
+                                    en
+                                    nuestra
+                                    población estudiantil.
+                                </p>
+                                <div class="vcenter">
+                                    <img src="C/img/img4.png" alt="Redes más usadas" class="img-fluid zoom">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Amenazas Reportadas</h5>
+                                <p>Los "<strong>Acosadores digitales (Stalkers, Groomers)</strong>" (25.9%) son la
+                                    amenaza más reportada por
+                                    los
+                                    estudiantes,
+                                    y seguidamente se encuentran el <strong>robo de datos</strong> (22.2%) y las
+                                    <strong>estafas</strong> (20.4%).
+                                </p>
+                                <div class="vcenter">
+                                    <img src="C/img/img9.png" alt="Amenazas reportadas" class="img-fluid zoom">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Inmersión Digital</h5>
+                                <p>La mayoría de los estudiantes (57.4%) pasa <strong>más de 30 minutos por
+                                        sesión</strong>.</p>
+                                <div class="vcenter">
+                                    <img src="C/img/img5.png" alt="Tiempo por sesión" class="img-fluid zoom">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Intermitencia entre sesiones</h5>
+                                <p>Además de las largas sesiones, un 55.6% de los estudiantes <strong>revisa
+                                        las
+                                        redes
+                                        "muy
+                                        frecuentemente"</strong>.</p>
+                                <div class="vcenter">
+                                    <img src="C/img/img6.png" alt="Tiempo entre sesiones" class="img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Brecha de Conocimiento</h5>
+                                <p>Preocupantemente, el 72.2% de los estudiantes <strong>desconoce el término
+                                        "Phishing"</strong> como tal.</p>
+                                <div class="vcenter">
+                                    <img src="C/img/img7.png" alt="Conocimiento sobre el Phishing"
+                                        class="img-fluid zoom">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Brecha de Conocimiento</h5>
+                                <p>En relación al término anterior, otra mayoría de estudiantes (75.9%)
+                                    <strong>desconoce
+                                        el término
+                                        "Groomer"</strong>.
+                                </p>
+                                <div class="vcenter">
+                                    <img src="C/img/img8.png" alt="Conocimiento sobre los Groomers"
+                                        class="img-fluid zoom">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Medidas de Seguridad</h5>
+                                <p>Se refleja un alto <strong>uso de contraseñas seguras</strong> (68.5%) por parte de
+                                    un gran grupo de estudiantes,
+                                    pero un
+                                    uso
+                                    alarmantemente bajo del método de <strong>Verificación en Dos Pasos</strong>
+                                    (31.5%).
+                                </p>
+                                <div class="vcenter">
+                                    <img src="C/img/img10.png" alt="Medidas de seguridad" class="img-fluid zoom">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 scroll-card spacing"></div>
+                        <div class="col-md-6 scroll-card">
+                            <div class="textbox v3">
+                                <h5>Percepción de Riesgo</h5>
+                                <p>Sí existe una buena percepción ante el peligro: el 50% de los estudiantes le dio la
+                                    calificación
+                                    más
+                                    alta
+                                    (5/5, Muy peligroso) a <strong>los acosadores en línea</strong>.</p>
+                                <div class="vcenter">
+                                    <img src="C/img/img11.png" alt="Percepción de Riesgo" class="img-fluid zoom">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 scroll-card spacing"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="textbox v5">
-                    <h5>Brecha de Conocimiento</h5>
-                    <p>El dato más preocupante: el 72.2% desconoce qué es "Phishing" y el 75.9% desconoce qué es un
-                        "Groomer".</p>
-                    <img src="C/img/img7.png" alt="Conocimiento sobre el Phishing" class="img-fluid">
-                    <img src="C/img/img8.png" alt="Conocimiento sobre los Groomers" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-md-4 mt-3">
-                <div class="textbox v5">
-                    <h5>Amenazas Reportadas</h5>
-                    <p>Muestra que los "Acosadores digitales" (25.9%) son la amenaza más reportada por los estudiantes,
-                        seguida del robo de datos (22.2%) y las estafas (20.4%).</p>
-                    <img src="C/img/img9.png" alt="Amenazas reportadas" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-md-4 mt-3">
-                <div class="textbox v3">
-                    <h5>Medidas de Seguridad</h5>
-                    <p>Refleja la falla de seguridad crítica: un alto uso de contraseñas seguras (68.5%) pero un
-                        <strong>uso
-                            alarmantemente bajo de Verificación en Dos Pasos (31.5%)</strong>.
-                    </p>
-                    <img src="C/img/img10.png" alt="Medidas de seguridad" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-md-4 mt-3">
-                <div class="textbox v4">
-                    <h5>Percepción de Riesgo</h5>
-                    <p>Confirma que sí percibimos el peligro: el 50% de los estudiantes le dio la calificación más alta
-                        (5/5, Muy peligroso) a los acosadores en línea.</p>
-                    <img src="C/img/img11.png" alt="Percepción de Riesgo" class="img-fluid">
+                <div class="col-md-1">
+                    <div class="vcenter">
+                        <div class="textButton" id="rightJumpButton">
+                            <img src="C/img/dIcon.png" alt="Ir a la derecha">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,99 +524,287 @@
         <hr>
 
         <div class="row" id="prevencion">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <div class="textbox v6">
-                    <h2 class="text-center">Métodos de Prevención: </h2>
-                    <h2 class="text-center"> ¿Cómo Me Protejo?</h2>
-                    <p class="text-center">La protección es una mezcla de herramientas técnicas y pensamiento crítico.
-                        El
-                        estudio mostró que se suele hacer bien lo básico en seguridad, pero se falla en otros aspectos
-                        importantes.</p>
-                </div>
-            </div>
-            <div class="spacing-2"></div>
-
-            <div class="col-md-4">
-                <div class="textbox v5">
-                    <h4>1. Protocolos Fundamentales</h4>
-                    <p>Estos son los pilares básicos de la seguridad digital y constituyen el primer nivel de
-                        defensa de sus cuentas. Su correcta aplicación es obligatoria para la mitigación de riesgos.
-                    </p>
-                    <ul>
-                        <li><strong>Gestión de Contraseñas:</strong> Establezca claves que combinen mayúsculas,
-                            minúsculas,
-                            números y símbolos. Evite el uso de la misma clave en múltiples plataformas para
-                            prevenir el compromiso masivo de cuentas.</li>
-                        <li><strong>Configuración de Privacidad:</strong> Revise y configure sus perfiles personales
-                            como privados por
-                            defecto. Limite el acceso a sus publicaciones y contenido únicamente a contactos conocidos.
-                        </li>
-                        <li><strong>Recuperación de Cuenta:</strong> Asegure que todas sus cuentas estén vinculadas a un
-                            correo
-                            electrónico y/o número de teléfono de respaldo actualizados y seguros. Este paso es
-                            fundamental para la recuperación en caso de un acceso no autorizado.</li>
-                    </ul>
-                    <p>Estas medidas establecen una base robusta, pero se debe entender que son insuficientes por sí
-                        solas contra ataques de ingeniería social avanzados como el Phishing.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="textbox v2">
+                        <h2 class="text-center">Métodos de Prevención: </h2>
+                        <h2 class="text-center">¿Cómo Me Protejo?</h2>
+                        <p class="text-center">La protección es una mezcla de herramientas técnicas y pensamiento
+                            crítico.
+                            Estas son algunas de las medidas más importantes en cuanto a seguridad digital.</p>
+                        <p class="text-center">Haz click en los cuadros para verlos.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="textbox v7">
-                    <h4>2. Autenticación Multifactor (2FA)</h4>
-                    <p>La Verificación en Dos Pasos (2FA) representa la capa de seguridad más importante en el
-                        ecosistema digital actual. Su función es requerir una segunda forma de verificación (un
-                        código temporal, token o dato biométrico) después de introducir la contraseña.</p>
 
-                    <h5>¿Por qué es importante la 2FA?</h5>
-                    <p>Este protocolo está diseñado para anular la eficacia de los ataques. Si un
-                        atacante obtiene su contraseña a través de algún medio, no podrá finalizar el inicio de
-                        sesión sin el código temporal generado en su dispositivo de confianza. La implementación de
-                        la 2FA es un requisito de seguridad de primer orden en todas las plataformas.</p>
-
-                    <p><strong>Procedimiento de Activación:</strong></p>
-                    <ul>
-                        <li><a href="https://faq.whatsapp.com/1278661612895630" target="_blank">Tutorial para
-                                activar 2FA en WhatsApp</a></li>
-                        <li><a href="https://help.instagram.com/566810106808145" target="_blank">Tutorial para
-                                activar 2FA en Instagram</a></li>
-                        <li><a href="https://support.tiktok.com/es/safety-hc/account-and-user-safety/2-step-verification"
-                                target="_blank">Tutorial para activar 2FA en TikTok</a></li>
-                    </ul>
+            <div class="row">
+                <div class="col-md-4" id="metodos-control">
+                    <div class="col-md-12">
+                        <div class="textButton v1" id="metodos1Button">
+                            <h4>1. Protocolos Fundamentales</h4>
+                            <img src="C/img/dIcon.png" alt="Protocolos básicos">
+                        </div>
+                    </div>
+                    <div class="p-1"></div>
+                    <div class="col-md-12">
+                        <div class="textButton v1" id="metodos2Button">
+                            <h4>2. Autenticación Multifactor (2FA)</h4>
+                            <img src="C/img/dIcon.png" alt="Factor de doble autenticación">
+                        </div>
+                    </div>
+                    <div class="p-1"></div>
+                    <div class="col-md-12">
+                        <div class="textButton v1" id="metodos3Button">
+                            <h4>3. Alfabetización Digital</h4>
+                            <img src="C/img/dIcon.png" alt="Alfabetización digital">
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="textbox v8">
-                    <h4>3. Alfabetización Digital (El "Saber Ver")</h4>
-                    <p>La mejor herramienta es tu propio criterio. La alfabetización digital es la capacidad de
-                        analizar
-                        y
-                        evaluar críticamente lo que ves.</p>
-                    <ul>
-                        <li><strong>Desconfía de la Urgencia:</strong> Los mensajes de Phishing siempre te apuran.
-                            Tómate
-                            una pausa y analiza.</li>
-                        <li><strong>Revisa el Remitente:</strong> Fíjate bien en el correo o número. Usualmente
-                            tienen
-                            errores sutiles (ej. @instagrarn.com).</li>
-                        <li><strong>Si es Demasiado Bueno...:</strong> ...es falso. Nadie regala iPhones o dinero
-                            fácil.
-                        </li>
-                        <li><strong>Gestiona el Acoso:</strong> La regla de oro es <strong>No Interactuar</strong>.
-                            No
-                            alimentes al troll.
-                            <ul>
-                                <li><strong>Documenta:</strong> Toma capturas de pantalla.</li>
-                                <li><strong>Bloquea:</strong> Elimina su capacidad de contactarte.</li>
-                                <li><strong>Reporta:</strong> Usa las herramientas de la plataforma.</li>
-                                <li><strong>Habla:</strong> Coméntalo con un adulto de confianza.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Privacidad ante Desconocidos:</strong> Nunca envíes fotos íntimas. Desconfía de
-                            desconocidos que son "demasiado" amigables.</li>
-                    </ul>
+                <div class="col-md-10">
+                    <div class="row hidden" id="metodos1-control">
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <p>Estos son los <strong>pilares básicos de la seguridad digital</strong> y constituyen
+                                    el primer
+                                    nivel
+                                    de
+                                    defensa de sus cuentas. Su correcta aplicación es obligatoria para la
+                                    <strong>mitigación
+                                        de
+                                        riesgos.</strong>
+                                </p>
+                                <p>Estas son algunas de las recomendaciones más comunes en cuanto a lo básico en
+                                    seguridad:</p>
+                                <ul>
+                                    <li>
+                                        <p><strong>Gestión de contraseñas:</strong> Establezca claves que combinen
+                                            mayúsculas,
+                                            minúsculas,
+                                            números y símbolos. Evite el uso de la misma clave en múltiples
+                                            plataformas. También se recomienda evitar utilizar
+                                            información personal como nombres, apellidos, fechas, etc.</p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Configuración de privacidad:</strong> Revise y configure sus
+                                            perfiles
+                                            personales
+                                            como privados por
+                                            defecto. Limite el acceso a sus publicaciones y contenido únicamente a
+                                            contactos
+                                            conocidos.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Recuperación de cuenta:</strong> Asegure que todas sus cuentas
+                                            estén
+                                            vinculadas
+                                            a un
+                                            correo
+                                            electrónico y/o número de teléfono de respaldo actualizado y seguro.
+                                            Este
+                                            paso
+                                            es
+                                            fundamental para la recuperación de su cuenta si ocurre algo.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <p>Estas medidas establecen una base robusta, pero se debe entender que
+                                            <strong>son
+                                                insuficientes
+                                                por sí
+                                                solas contra ataques avanzados</strong> como el Phishing.
+                                        </p>
+                                        <p>Para prevenir ataques mayores, se requieren de <strong>métodos
+                                                adicionales</strong>
+                                            que son altamente importantes ya que complementan la base de la seguridad.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="vcenter">
+                                            <img src="C/img/img12.jpg" alt="Contraseñas seguras."
+                                                class="img-fluid zoom">
+
+                                            <p class="text-center small"><em>Sigue las recomendaciones a la hora de
+                                                    crear una
+                                                    contraseña.</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row hidden" id="metodos2-control">
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <p>La <strong>Verificación en Dos Pasos (2FA)</strong> representa la capa de seguridad
+                                    <strong>más importante</strong>
+                                    en
+                                    el
+                                    ecosistema digital actual.
+                                </p>
+                                <p>Su función es requerir una <strong>segunda forma de
+                                        verificación</strong>
+                                    (un
+                                    código temporal, token o dato biométrico) después de introducir la contraseña.
+                                    La
+                                    implementación
+                                    de
+                                    la 2FA <strong>es un requisito de seguridad de primer orden</strong> en todas las
+                                    plataformas.
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="vcenter">
+                                            <img src="C/img/img13.jpg" alt="Uso de 2FA" class="img-fluid zoom">
+
+                                            <p class="text-center small"><em>El 2FA requiere de un solo paso extra, pero
+                                                    es de gran importancia.</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <h5>¿Por qué es importante la 2FA?</h5>
+                                <p>Este protocolo está diseñado para <strong>anular la eficacia de los ataques</strong>.
+                                    Si un
+                                    atacante obtiene su contraseña a través de algún medio, <strong>no podrá finalizar
+                                        el
+                                        inicio
+                                        de
+                                        sesión</strong> sin el código temporal generado en su dispositivo de confianza.
+                                </p>
+                                <h5>¿Cómo puedo activar la 2FA en mis redes sociales?</h5>
+                                <p>Estos son algunos enlaces a foros oficiales de las redes sociales más utilizadas
+                                    donde puedes activar la 2FA:</p>
+                                <ul>
+                                    <li>
+                                        <p class="textLink"><a href="https://faq.whatsapp.com/1278661612895630"
+                                                target="_blank">Tutorial
+                                                para
+                                                activar 2FA en WhatsApp</a></p>
+                                    </li>
+                                    <li>
+                                        <p class="textLink"><a href="https://help.instagram.com/566810106808145"
+                                                target="_blank">Tutorial
+                                                para
+                                                activar 2FA en Instagram</a></p>
+                                    </li>
+                                    <li>
+                                        <p class="textLink"><a
+                                                href="https://support.tiktok.com/es/safety-hc/account-and-user-safety/2-step-verification"
+                                                target="_blank">Tutorial para activar 2FA en TikTok</a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row hidden" id="metodos3-control">
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <p>La mejor herramienta es tu propio criterio. La alfabetización digital, también
+                                    conocida como "El saber ver", es la
+                                    capacidad
+                                    de
+                                    analizar
+                                    y
+                                    evaluar críticamente lo que ves.</p>
+
+                                <p>No siempre se puede estar seguro en un espacio tan abierto como Internet. Tampoco
+                                    podemos estar
+                                    totalmente exentos de cualquier ataque o mala intención. Aún así, podemos aplicar
+                                    distintas reglas
+                                    generales, por más sencillas que parezcan, para poder prevenir la mayor parte de
+                                    situaciones con
+                                    las que nos podamos enfrentar.
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="vcenter">
+                                            <img src="C/img/img14.jpg" alt="Prevención" class="img-fluid zoom">
+
+                                            <p class="text-center small"><em>Debemos ser totalmente preventivos en
+                                                    Internet.</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="textbox v2">
+                                <ul>
+                                    <li>
+                                        <p><strong>Desconfía de la urgencia:</strong> Los mensajes de Phishing
+                                            siempre
+                                            te
+                                            apuran.
+                                            Tómate
+                                            una pausa y analiza.</p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Revisa el remitente:</strong> Fíjate bien en el correo o número.
+                                            Usualmente
+                                            tienen
+                                            errores sutiles (ej. @instagrarn.com).</p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Si es demasiado bueno...:</strong> ...es falso. Nadie regala
+                                            iPhones
+                                            o
+                                            dinero
+                                            fácil.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p class="no-pad"><strong>Gestiona el acoso:</strong> La regla de oro es
+                                            <strong>no
+                                                interactuar</strong>.
+                                            No
+                                            alimentes al acosador, sólo reporta y aléjate.
+                                        </p>
+                                        <ul>
+                                            <li>
+                                                <p><strong>Documenta:</strong> Toma capturas de pantalla.</p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Bloquea:</strong> Elimina su capacidad de contactarte.
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <p><strong>Reporta:</strong> Usa las herramientas de la plataforma.
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <p class="f-pad"><strong>Habla:</strong> Coméntalo con un adulto de
+                                                    confianza.</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p><strong>Privacidad ante desconocidos:</strong> Nunca envíes fotos
+                                            íntimas.
+                                            Desconfía
+                                            de
+                                            desconocidos que son "demasiado" amigables.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -370,65 +812,118 @@
         <hr>
 
         <div class="row" id="contacto">
-            <div class="col-md-8">
-                <div class="textbox v9">
-                    <h2>Sobre el Proyecto y Contacto</h2>
-                    <div class="row">
-                        <div class="col-md-9">
-                            <p>Este blog informativo es el producto final del Proyecto de Graduación titulado:
-                                <strong>"Riesgos
-                                    del
-                                    uso de redes sociales en los estudiantes de cuarto ciclo del Colegio Técnico
-                                    Profesional de
-                                    Turrubares, durante el primer periodo del año 2025"</strong>.
-                            </p>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="img-dv">
-                                <img src="C/img/img15.png" alt="">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="textbox v5">
+
+                        <div class="row mx-auto">
+                            <div class="col-md-9">
+                                <h2>Sobre el Proyecto y Contacto</h2>
+                                <p>Este blog informativo es el producto final del Proyecto de Graduación titulado:
+                                    <strong>"Riesgos
+                                        del
+                                        uso de redes sociales en los estudiantes de cuarto ciclo del Colegio Técnico
+                                        Profesional de
+                                        Turrubares, durante el primer periodo del año 2025"</strong>.
+                                </p>
+                                <p><strong>Autor:</strong> Ignacio José Apuy Anchía<br>
+                                    <strong>Especialidad:</strong> Desarrollo Web.<br>
+                                    <strong>Tutora:</strong> Estela Ivette Soto Rivera
+                                </p>
+                                <p>El objetivo del proyecto no es solo presentar datos, sino realizar una
+                                    <strong>estrategia de
+                                        concientización y transferencia de conocimiento</strong>, transformando los
+                                    hallazgos de
+                                    la
+                                    investigación en una herramienta pedagógica directa y sostenible para la comunidad
+                                    educativa.
+                                </p>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="img-dv">
+                                    <img src="C/img/img15.png" alt="Logo CTP Turrubares">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p>El objetivo principal no es solo presentar datos, sino realizar una <strong>estrategia de
-                            concientización y transferencia de conocimiento</strong>, transformando los hallazgos de la
-                        investigación en una herramienta pedagógica directa y sostenible para la comunidad educativa.
-                    </p>
-
-                    <p><strong>Autor:</strong> Ignacio José Apuy Anchía<br>
-                        <strong>Especialidad:</strong> Desarrollo Web.<br>
-                        <strong>Tutora:</strong> Estela Ivette Soto Rivera
-                    </p>
                 </div>
 
-            </div>
-            <div class="col-md-4">
-                <div class="vcenter">
-                    <img id="img4" src="C/img/foto.jpg" alt="Foto de Ignacio Apuy" class="img-fluid rounded-circle"
-                        style="border: 5px solid #97e2ffc5;">
+                <div class="col-md-6">
+                    <div class="textbox v5">
+                        <h4>Redes sociales</h4>
+                        <ul>
+                            <li>
+                                <p class="textLink"><a href="https://www.facebook.com/ignacio.apuy" target="_blank"><img
+                                            src="C/img/fbLogo.png" alt="FBLogo"> Facebook | Ignacio Apuy Anchía</a>
+                                </p>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <p class="textLink"><a href="https://www.instagram.com/ignacio.apuy/"
+                                        target="_blank"><img src="C/img/igLogo.png" alt="IGLogo">Instagram |
+                                        @ignacio.apuy</a>
+                                </p>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <p class="textLink"><a href="https://api.whatsapp.com/send?phone=50689207967"
+                                        target="_blank"><img src="C/img/wsLogo.png" alt="WSLogo">WhatsApp | +506
+                                        8920-7967</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
-
             </div>
-
-            <div class="spacing-2"></div>
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="textbox v9">
+                <div class="col-md-6">
+                    <div class="textbox v5">
                         <h4>Anexos y Recursos Adicionales</h4>
-                        <button class="download"
-                            onclick="window.open('Proyecto Final de Graduación Ignacio Apuy Anchía.pdf', '_blank')">Descargar
-                            PDF de la investigación</button>
-                        <br><br>
+                        <div class="row">
+                            <button class="download"
+                                onclick="window.open('Proyecto Final de Graduación Ignacio Apuy Anchía.pdf', '_blank')">
+                                <img src="C/img/docIcon.png" alt="Documento de la investigación">Documento de la
+                                investigación</button>
+
+                            <button class="download"
+                                onclick="window.open('Bitácora Proyecto Final de Graduación Ignacio Apuy Anchía.pdf', '_blank')"><img
+                                    src="C/img/docIcon.png" alt="Bitácora de la investigación">Bitácora de la
+                                investigación</button>
+
+                            <button class="download"
+                                onclick="window.open('Cronograma Proyecto Final de Graduación Ignacio Apuy Anchía.pdf', '_blank')"><img
+                                    src="C/img/docIcon.png" alt="Cronograma de la investigación">Cronograma de la
+                                investigación</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="textbox v5">
                         <h5>Referencias</h5>
                         <ul>
-                            <li><a href="https://www.incibe.es/menores" target="_blank">INCIBE (Instituto Nacional de
-                                    Ciberseguridad de España) - Sección Menores</a></li>
-                            <li><a href="https://www.unicef.org/es/proteccion-infancia/riesgos-digitales"
-                                    target="_blank">UNICEF
-                                    - Riesgos Digitales y Seguridad en Línea</a></li>
-                            <li><a href="https://www.aepd.es/es/canales/menores" target="_blank">Agencia Española de
-                                    Protección de Datos - Canal Menores</a></li>
+                            <li>
+                                <p class="textLink"><a href="https://www.incibe.es/menores" target="_blank">INCIBE
+                                        (Instituto
+                                        Nacional
+                                        de
+                                        Ciberseguridad de España) - Sección Menores</a></p>
+                            </li>
+                            <li>
+                                <p class="textLink"><a
+                                        href="https://www.unicef.org/es/proteccion-infancia/riesgos-digitales"
+                                        target="_blank">UNICEF
+                                        - Riesgos Digitales y Seguridad en Línea</a></p>
+                            </li>
+                            <li>
+                                <p class="textLink"><a href="https://www.aepd.es/es/canales/menores"
+                                        target="_blank">Agencia
+                                        Española
+                                        de
+                                        Protección de Datos - Canal Menores</a></p>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -438,6 +933,14 @@
 
     <div class="footer">
         <p class="text-center">&copy; 2025 Ignacio Apuy. Todos los derechos reservados.</p>
+    </div>
+
+    <div class="force-hidden" id="end">
+        <div class="text-center force-hidden">
+            <h1>Gracias por su atención.</h1>
+            <h2>Demostración realizada por: Ignacio Apuy Anchía</h2>
+            <h2>2025</h2>
+        </div>
     </div>
 </body>
 <script src="C/main.js"></script>
