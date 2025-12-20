@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta TSE Pura</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>Consulta TSE (Sin Servidor)</h2>
+    <input type="text" id="txtCedula" placeholder="Cédula">
+    <button onclick="iniciarConsulta()">Consultar</button>
+    
+    <div id="status">Esperando...</div>
+    <div id="resultado"></div>
+
+    <script>
+        // Función auxiliar para imitar la "magia" de los selectores que hicimos antes
+        function buscarEnDOM(doc, partialId) {
+            // Busca un span cuyo ID contenga el texto (la 'i' lo hace insensible a mayúsculas)
+            // Esto es JS moderno nativo.
+            const el = doc.querySelector(`span[id*="${partialId}" i]`);
+            return el ? el.innerText.trim() : "---";
+        }
+
+        async function iniciarConsulta() {
+            const cedula = document.getElementById('txtCedula').value;
+            const status = document.getElementById('status');
+            const resultadoDiv = document.getElementById('resultado');
+            
+            // URLs
+            const baseUrl = 'https://servicioselectorales.tse.go.cr/chc/';
+            const urlConsulta = baseUrl + 'consulta_cedula.aspx';
+            const urlResultado = baseUrl + 'resultado_persona.aspx';
+
+            status.innerHTML = "🔵 [1/3] Conectando (Obteniendo ViewState)...";
+            resultadoDiv.innerHTML = "";
+
+            try {
+                // --- PASO 1: GET INICIAL ---
+                // Nota: fetch maneja las cookies automáticamente si incluimos 'credentials: include'
+                // pero SOLO si CORS lo permite.
+                const resInit = await fetch(urlConsulta);
+                const textInit = await resInit.text();
+
+                // Usamos DOMParser en lugar de Cheerio
+                const parser = new DOMParser();
+                const docInit = parser.parseFromString(textInit, 'text/html');
+
+                const viewState = docInit.getElementById('__VIEWSTATE').value;
+                const viewStateGen = docInit.getElementById('__VIEWSTATEGENERATOR').value;
+                const eventValidation = docInit.getElementById('__EVENTVALIDATION').value;
+
+                // --- PASO 2: POST ---
+                status.innerHTML = "🟠 [2/3] Enviando Cédula...";
+
+                const params = new URLSearchParams();
+                params.append('ScriptManager1', 'UpdatePanel1|btnConsultaCedula');
+                params.append('__VIEWSTATE', viewState);
+                params.append('__VIEWSTATEGENERATOR', viewStateGen);
+                params.append('__EVENTVALIDATION', eventValidation);
+                params.append('txtcedula', cedula);
+                params.append('__ASYNCPOST', 'true');
+                params.append('btnConsultaCedula', 'Consultar');
+
+                const resPost = await fetch(urlConsulta, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'X-MicrosoftAjax': 'Delta=true'
+                    },
+                    body: params
+                });
+
+                const textPost = await resPost.text();
+
+                if (textPost.includes('pageRedirect')) {
+                    status.innerHTML = "🟢 [3/3] Procesando respuesta...";
+
+                    // --- PASO 3: GET RESULTADOS ---
+                    const resFinal = await fetch(urlResultado);
+                    const textFinal = await resFinal.text();
+                    
+                    // Parsear el HTML final
+                    const docFinal = parser.parseFromString(textFinal, 'text/html');
+
+                    // --- EXTRACCIÓN DE DATOS (Tus campos) ---
+                    const datos = {
+                        "Nombre Completo": buscarEnDOM(docFinal, 'lblnombrecompleto'),
+                        "Cédula": buscarEnDOM(docFinal, 'lblcedula'),
+                        "Fecha Nacimiento": buscarEnDOM(docFinal, 'lblfechaNacimiento'),
+                        "Nombre Padre": buscarEnDOM(docFinal, 'lblnombrepadre'),
+                        "ID Padre": buscarEnDOM(docFinal, 'lblid_padre'),
+                        "Nombre Madre": buscarEnDOM(docFinal, 'lblnombremadre'),
+                        "ID Madre": buscarEnDOM(docFinal, 'lblid_madre')
+                    };
+
+                    // Renderizar tabla
+                    let htmlTabla = "<table><tr><th>Campo</th><th>Valor</th></tr>";
+                    for (const [key, val] of Object.entries(datos)) {
+                        htmlTabla += `<tr><td>${key}</td><td>${val}</td></tr>`;
+                    }
+                    htmlTabla += "</table>";
+                    
+                    resultadoDiv.innerHTML = htmlTabla;
+                    status.innerHTML = "<span class='success'>✅ Consulta Exitosa</span>";
+
+                } else {
+                    status.innerHTML = "<span class='error'>❌ No se encontró redirección (Cédula inválida o bloqueo).</span>";
+                }
+
+            } catch (error) {
+                console.error(error);
+                status.innerHTML = `<span class='error'>❌ Error: ${error.message} <br> (Probablemente CORS. Activa una extensión de CORS o usa Node.js)</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
