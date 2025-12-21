@@ -35,6 +35,7 @@
             <td>Nombre</td>
             <td>Edad</td>
             <td>Nacimiento</td>
+            <td>Provincia</td>
             <td>Teléfono</td>
         </tr>
         <tbody>
@@ -82,7 +83,35 @@
             edad = new Date().getFullYear() - c.split("/")[2]
         }
 
-        let finalData = [b, a, edad, c, numero]
+        let provincia = "-";
+        switch(b.charAt(0)) {
+            case "1":
+                provincia = "SAN JOSÉ";
+                break;
+            case "2":
+                provincia = "ALAJUELA";
+                break;
+            case "3":
+                provincia = "CARTAGO";
+                break;
+            case "4":
+                provincia = "HEREDIA";
+                break;
+            case "5":
+                provincia = "GUANACASTE";
+                break;
+            case "6":
+                provincia = "PUNTARENAS";
+                break;
+            case "7":
+                provincia = "LIMÓN";
+                break;
+            case "8":
+                provincia = "EXTRANJERO";
+                break;
+        }
+
+        let finalData = [b, a, edad, c, provincia, numero]
 
         for (let i of finalData) {
             let newTd = document.createElement('td');
@@ -166,6 +195,5 @@
     }
 
 </script>
-
 
 </html>
