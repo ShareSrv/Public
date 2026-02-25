@@ -191,13 +191,16 @@
             body {
                 background-position: 40% 0;
             }
+
             .queryPage {
                 width: 80%;
             }
-            th{
+
+            th {
                 font-size: 10px;
             }
-            td{
+
+            td {
                 font-size: 10px;
             }
         }
@@ -294,7 +297,7 @@
                     <div id="anterior"></div>
                 </div>
             </div>
-            <p></p>
+            <br>
             <button id="locBtn" class="hidden">Reintentar</button>
             <button id="backBtn">Volver</button>
         </div>
@@ -416,6 +419,7 @@
     let retry = "";
 
     async function clickRow(event, r = false) {
+        locBtn.classList.add('hidden');
         locRes.classList.add('hidden');
         wModel = {
             nombre: "",
