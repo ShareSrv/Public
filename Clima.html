@@ -223,7 +223,7 @@
                 <option value="2">Cartago</option>
                 <option value="3">Heredia</option>
                 <option value="4">Puntarenas</option>
-                <option value="5">Guancaste</option>
+                <option value="5">Guanacaste</option>
                 <option value="6">Limón</option>
             </select>
         </div>
@@ -387,7 +387,6 @@
         if (!provListed) {
             provListed = await listLugares();
             if (!provListed) {
-                console.log("Error en listLugares");
                 provTxt.innerText = "No se pudo realizar la consulta.";
                 provBtn.disabled = false;
                 provBtn.classList.remove('hidden');
@@ -412,6 +411,118 @@
 
             locTable.innerHTML = tdLugares;
 
+        }
+    }
+
+    async function listLugares() {
+        document.getElementById('provTxt').innerText = "Consultando provincia...";
+        const url = 'https://soft-base-e57d.ignacioapuy.workers.dev?url=https://www.imn.ac.cr/web/imn/estaciones-automaticas';
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                cache: 'no-store',
+                headers: {
+
+                }
+            });
+
+            const data = await response.text();
+            console.log(data);
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+
+            const dLocs = doc.querySelectorAll('tr');
+            console.log(dLocs);
+
+            for (x of dLocs) {
+
+                if (x.querySelector('th') != null) continue;
+                if (x.querySelector('td') == null) continue;
+                console.log(x.querySelector('td').innerHTML);
+                let data = x.querySelectorAll('td');
+                let lugar = data[0].innerHTML.trim();
+                if (lugar.includes("<p")) {
+                    lugar = data[0].querySelector("p").innerHTML.trim();
+                }
+
+                let rawRegion = data[1];
+                if (rawRegion.querySelector("p") != null) {
+                    rawRegion = rawRegion.querySelector("p");
+                }
+                if(rawRegion.querySelector("span") != null){
+                    rawRegion = rawRegion.querySelector("span");
+                }
+
+                let region = rawRegion.innerHTML.trim().split(" - ")[0];
+
+                let provincia = rawRegion.innerHTML.trim().split(" - ")[1];
+
+                let estado = data[2];
+                if (estado.querySelector("span") != null) {
+                    estado = estado.querySelector("span").innerHTML;
+                } else {
+                    estado = estado.innerHTML;
+                }
+
+                estado = estado.replace("ctiva", "ctivo").replace("&nbsp;", "").trim();
+                let url = data[3].querySelector("a").href;
+
+                listaRaw.push({
+                    lugar: lugar,
+                    region: region,
+                    provincia: provincia,
+                    estado: estado,
+                    url: url
+                })
+            }
+
+            console.log(listaRaw);
+
+            for (x of listaRaw) {
+                switch (x.provincia) {
+                    case "San José":
+                        listaLugares[0].lugares.push(x);
+                        break;
+                    case "Alajuela":
+                        listaLugares[1].lugares.push(x);
+                        break;
+                    case "Cartago":
+                        listaLugares[2].lugares.push(x);
+                        break;
+                    case "Heredia":
+                        listaLugares[3].lugares.push(x);
+                        break;
+                    case "Puntarenas":
+                        listaLugares[4].lugares.push(x);
+                        break;
+                    case "Guanacaste":
+                        listaLugares[5].lugares.push(x);
+                        break;
+                    case "Limón":
+                        listaLugares[6].lugares.push(x);
+                        break;
+                }
+            }
+
+            for (z in listaLugares) {
+                listaLugares[z].lugares.sort((a, b) => {
+                    if (a.lugar < b.lugar) {
+                        return -1;
+                    }
+                    if (a.lugar > b.lugar) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            }
+
+            return true;
+
+        } catch (error) {
+            console.log("listLugares error: " + error.message);
+            return false;
         }
     }
 
@@ -519,7 +630,7 @@
 
 
             } catch (error) {
-                console.log("Error en clickRow" + error.message);
+                console.log("clickRow > dataGET error" + error.message);
                 resTxt.innerText = "No se pudo realizar la consulta.";
                 backBtn.classList.remove('hidden');
                 locBtn.innerHTML = "Reintentar";
@@ -531,7 +642,7 @@
 
 
         } catch (error) {
-            console.log("Error en clickRow" + error.message);
+            console.log("clickRow > titleGET error" + error.message);
             resTxt.innerText = "No se pudo realizar la consulta.";
             backBtn.classList.remove('hidden');
             locBtn.innerHTML = "Reintentar";
@@ -565,102 +676,6 @@
         locBtn.innerHTML = "Actualizar";
         locBtn.disabled = false;
         locBtn.classList.remove('hidden');
-    }
-
-    async function listLugares() {
-        document.getElementById('provTxt').innerText = "Consultando provincia...";
-        const url = 'https://soft-base-e57d.ignacioapuy.workers.dev?url=https://www.imn.ac.cr/web/imn/estaciones-automaticas';
-
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                cache: 'no-store',
-                headers: {
-
-                }
-            });
-
-            const data = await response.text();
-            console.log(data);
-
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data, 'text/html');
-
-            const dLocs = doc.querySelectorAll('tbody > tr');
-
-            for (x of dLocs) {
-                let data = x.querySelectorAll('td');
-                let lugar = data[0];
-                if (lugar.querySelector("p") != null) {
-                    lugar = lugar.querySelector("p").innerHTML.trim();
-                } else {
-                    lugar = lugar.innerHTML.trim();
-                }
-                let region = data[1].innerHTML.split("-")[0].trim();
-                let provincia = data[1].innerHTML.split("-")[1].trim();
-                let estado = data[2];
-                if (estado.querySelector("span") != null) {
-                    estado = estado.querySelector("span").innerHTML.replace("va", "vo").trim();
-                } else {
-                    estado = estado.innerHTML.replace("va", "vo").trim();
-                }
-                let url = data[3].querySelector("a").href;
-
-                listaRaw.push({
-                    lugar: lugar,
-                    region: region,
-                    provincia: provincia,
-                    estado: estado,
-                    url: url
-                })
-            }
-
-            console.log(listaRaw);
-
-            for (x of listaRaw) {
-                switch (x.provincia) {
-                    case "San José":
-                        listaLugares[0].lugares.push(x);
-                        break;
-                    case "Alajuela":
-                        listaLugares[1].lugares.push(x);
-                        break;
-                    case "Cartago":
-                        listaLugares[2].lugares.push(x);
-                        break;
-                    case "Heredia":
-                        listaLugares[3].lugares.push(x);
-                        break;
-                    case "Puntarenas":
-                        listaLugares[4].lugares.push(x);
-                        break;
-                    case "Guanacaste":
-                        listaLugares[5].lugares.push(x);
-                        break;
-                    case "Limón":
-                        listaLugares[6].lugares.push(x);
-                        break;
-                }
-            }
-
-            for (z in listaLugares) {
-                listaLugares[z].lugares.sort((a, b) => {
-                    if (a.lugar < b.lugar) {
-                        return -1;
-                    }
-                    if (a.lugar > b.lugar) {
-                        return 1;
-                    }
-                    return 0;
-                })
-            }
-
-            return true;
-
-        } catch (error) {
-            console.log("Error: " + error.message);
-            return false;
-        }
     }
 </script>
 
