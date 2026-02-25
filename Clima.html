@@ -521,6 +521,7 @@
                 console.log("Error en clickRow" + error.message);
                 resTxt.innerText = "No se pudo realizar la consulta.";
                 backBtn.classList.remove('hidden');
+                locBtn.innerHTML = "Reintentar";
                 locBtn.disabled = false;
                 locBtn.classList.remove('hidden');
                 locRes.classList.add('hidden');
@@ -532,6 +533,7 @@
             console.log("Error en clickRow" + error.message);
             resTxt.innerText = "No se pudo realizar la consulta.";
             backBtn.classList.remove('hidden');
+            locBtn.innerHTML = "Reintentar";
             locBtn.disabled = false;
             locBtn.classList.remove('hidden');
             locRes.classList.add('hidden');
@@ -558,6 +560,10 @@
         }
         html += "</table>";
         locRes.querySelector("#anterior").innerHTML = html;
+
+        locBtn.innerHTML = "Actualizar";
+        locBtn.disabled = false;
+        locBtn.classList.remove('hidden');
     }
 
     async function listLugares() {
