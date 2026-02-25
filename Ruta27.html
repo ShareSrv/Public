@@ -464,7 +464,9 @@
             preciosElmnt.push(document.querySelector(`#p${i + 1}`));
             preciosTxt.push(document.querySelector(`#p${i + 1} > h2`))
         }
-        fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://globalviaruta27.com/tarifas'))
+        fetch('https://soft-base-e57d.ignacioapuy.workers.dev?url=https://globalviaruta27.com/tarifas', {
+                method: 'GET',
+                cache: 'no-store'})
             .then(response => {
                 return response.text()
             })
