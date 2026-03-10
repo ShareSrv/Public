@@ -603,20 +603,32 @@
                 console.log(dLocs2);
 
                 locRes.classList.remove('hidden');
-                wModel.nombre = dLocs1.querySelector("h4").innerHTML.trim();
-                wModel.fecha = dLocs2[1].rows[1].cells[0].textContent.trim();
-                wModel.url = "https://www.imn.ac.cr" + dLocs1.querySelector("img").getAttribute('src');
-                wModel.temperatura = dLocs2[2].rows[1].cells[1].textContent.trim();
-                wModel.tempSens = dLocs2[2].rows[1].cells[6].textContent.trim();
-                wModel.tempMax = dLocs2[1].rows[1].cells[4].textContent.trim();
-                wModel.tempMin = dLocs2[1].rows[1].cells[5].textContent.trim();
-                wModel.humedad = dLocs2[2].rows[1].cells[3].textContent.trim();
-                wModel.viento = dLocs2[2].rows[1].cells[4].textContent.trim();
-                wModel.vientoMax = dLocs2[1].rows[1].cells[1].textContent.trim();
-                for (x of dLocs2[0].rows) {
+                const isNullSt = (elem) => (elem && elem.textContent ? elem.textContent.trim() : "-");
+                wModel.nombre = (dLocs1.querySelector("h4")?.innerHTML?.trim()) || "-";
+                wModel.fecha = isNullSt(dLocs2[1]?.rows[1]?.cells[0]);
+                const rawSrc = dLocs1.querySelector("img")?.getAttribute('src') || "";
+                let imgSrc = rawSrc;
+                if (imgSrc) {
+                    if (!imgSrc.startsWith("/especial/")) {
+                        if (!imgSrc.startsWith("/")) {
+                            imgSrc = "/especial/" + imgSrc;
+                        } else {
+                            imgSrc = "/especial" + imgSrc;
+                        }
+                    }
+                }
+                wModel.url = "https://www.imn.ac.cr" + imgSrc;
+                wModel.temperatura = isNullSt(dLocs2[2]?.rows[1]?.cells[1]);
+                wModel.tempSens = isNullSt(dLocs2[2]?.rows[1]?.cells[6]);
+                wModel.tempMax = isNullSt(dLocs2[1]?.rows[1]?.cells[4]);
+                wModel.tempMin = isNullSt(dLocs2[1]?.rows[1]?.cells[5]);
+                wModel.humedad = isNullSt(dLocs2[2]?.rows[1]?.cells[3]);
+                wModel.viento = isNullSt(dLocs2[2]?.rows[1]?.cells[4]);
+                wModel.vientoMax = isNullSt(dLocs2[1]?.rows[1]?.cells[1]);
+                for (x of dLocs2[0]?.rows || []) {
                     wModel.anterior.push({
-                        fecha: x.cells[0].textContent.trim(),
-                        temperatura: x.cells[1].textContent.trim()
+                        fecha: isNullSt(x.cells[0]),
+                        temperatura: isNullSt(x.cells[1])
                     })
                 }
                 wModel.anterior.splice(0, 2);
@@ -630,7 +642,7 @@
 
 
             } catch (error) {
-                console.log("clickRow > dataGET error" + error.message);
+                console.log("clickRow > dataGET error" + error.message, error.stack);
                 resTxt.innerText = "No se pudo realizar la consulta.";
                 backBtn.classList.remove('hidden');
                 locBtn.innerHTML = "Reintentar";
@@ -642,7 +654,7 @@
 
 
         } catch (error) {
-            console.log("clickRow > titleGET error" + error.message);
+            console.log("clickRow > titleGET error" + error.message, error.stack);
             resTxt.innerText = "No se pudo realizar la consulta.";
             backBtn.classList.remove('hidden');
             locBtn.innerHTML = "Reintentar";
