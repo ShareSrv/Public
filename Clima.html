@@ -379,6 +379,41 @@
         locBtn.classList.add('hidden');
     })
 
+    window.addEventListener('load', async () => {
+        const queryString = window.location.search;
+
+        const urlParams = new URLSearchParams(queryString);
+
+        const provincia = urlParams.get('provincia');
+        const estacion = urlParams.get('estacion');
+
+        if (provincia != null) {
+            for (x of document.querySelectorAll('#provSel > option')) {
+                if (x.textContent == provincia) {
+                    x.selected = true;
+                    await changedProv();
+
+                    if(estacion != null) {
+                        console.log(document.querySelectorAll('#locTable'))
+                        for (y of document.querySelectorAll('#locTable > tbody > tr > td')) {
+                            if (y.textContent.includes(estacion)) {
+                                y.click();
+                                return;
+                            }
+                        }
+                        
+                        window.location.href = window.location.href.split('&')[0];
+                    }
+
+                    return;
+                }
+            }
+            window.location.href = window.location.href.split('?')[0];
+        }
+
+        console.log(provincia, estacion)
+    })
+
     async function changedProv() {
         locTable.innerHTML = "";
         q2.classList.remove('hidden');
@@ -390,7 +425,7 @@
                 provTxt.innerText = "No se pudo realizar la consulta.";
                 provBtn.disabled = false;
                 provBtn.classList.remove('hidden');
-                return;
+                return true;
             }
         }
         provTxt.classList.add('hidden');
@@ -451,7 +486,7 @@
                 if (rawRegion.querySelector("p") != null) {
                     rawRegion = rawRegion.querySelector("p");
                 }
-                if(rawRegion.querySelector("span") != null){
+                if (rawRegion.querySelector("span") != null) {
                     rawRegion = rawRegion.querySelector("span");
                 }
 
