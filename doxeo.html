@@ -1,213 +1,475 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doxeo</title>
+    <title>Super Doxeo CR V2 - Multi-Búsqueda</title>
     <style>
-        table {
-            padding: 5px;
-            border: 3px solid black;
-            border-collapse: collapse;
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --primary: #007bff;
+            --primary-hover: #0056b3;
+            --card-bg: #ffffff;
+            --border-radius: 10px;
         }
 
-        td {
-            padding: 5px;
-            border: 1px solid black;
-            min-width: 50px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-container {
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 10px 0;
+            color: #1a1a1a;
+        }
+
+        h3,
+        h4 {
+            margin: 5px 0;
+            color: #555;
+            font-weight: normal;
+        }
+
+        .search-box {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 550px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        select {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #status {
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary);
+            min-height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 123, 255, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #resultados-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            border-left: 6px solid var(--primary);
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .value {
+            font-size: 15px;
+            color: #222;
+            word-break: break-word;
+        }
+
+        .map-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .map-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <h3>Esta es una prueba para obtener información de varias bases de datos de Costa Rica.</h3>
-    <h3>Sólo se requiere un número de teléfono válido, registrado en SINPE.</h3>
-    <h3>Si el nombre obtenido contiene errores, es posible que lo demás falle.</h3>
-    <h4>Ingrese un número de teléfono</h4>
-    <input type="text" id="txt">
+    <div class="header-container">
+        <h1>APIs CR</h1>
+        <h3>Requests a APIs comunes de Costa Rica</h3>
+    </div>
 
-    <button id="btnConsultar">Consultar</button>
+    <div class="search-box">
+        <div class="input-group">
+            <select id="searchType">
+                <option value="numero">Teléfono (SINPE)</option>
+                <option value="nombre">Nombre Completo</option>
+                <option value="cedula">Cédula</option>
+            </select>
+            <input type="text" id="txt" placeholder="Ej: 88888888">
+            <button id="btnConsultar">Consultar</button>
+        </div>
+        <div id="status"></div>
+    </div>
 
-    <p id="status"></p>
+    <div id="resultados-container"></div>
 
-    <table id="resultado" style="display: none;">
-        <tr>
-            <td>Cédula</td>
-            <td>Nombre</td>
-            <td>Edad</td>
-            <td>Nacimiento</td>
-            <td>Provincia</td>
-            <td>Teléfono</td>
-        </tr>
-        <tbody>
-        </tbody>
-    </table>
-</body>
-<script>
-    const status = document.getElementById('status');
-    const result = document.getElementById('resultado');
-    document.getElementById('btnConsultar').addEventListener('click', async () => {
-        let txt = document.getElementById('txt');
-        let numero = txt.value;
+    <script>
+        const statusEl = document.getElementById('status');
+        const resultadosContainer = document.getElementById('resultados-container');
+        const searchType = document.getElementById('searchType');
+        const inputTxt = document.getElementById('txt');
 
-        if (numero.length != 8) {
-            status.innerText = "El número debe tener 8 dígitos";
-            return
-        }
+        inputTxt.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') btnConsultar.click();
+        });
 
-        numero = Number.parseInt(numero);
+        // Cambiar placeholder dinámicamente
+        searchType.addEventListener('change', () => {
+            const placeholders = {
+                'numero': 'Ej: 88888888',
+                'nombre': 'Ej: Juan Perez Mora',
+                'cedula': 'Ej: 101110111'
+            };
+            inputTxt.placeholder = placeholders[searchType.value];
+        });
 
-        if (Number.isNaN(numero)) {
-            status.innerText = "El número debe ser válido.";
-            return
-        }
+        document.getElementById('btnConsultar').addEventListener('click', async () => {
+            const val = inputTxt.value.trim();
+            const type = searchType.value;
 
-        init(document.getElementById('txt').value);
-        txt.value = "";
-    });
-
-    async function init(numero) {
-        status.innerText = "Consultando...";
-        let newRow = document.createElement('tr');
-        console.log("Telefono: " + numero);
-        let a = await obtenerNombre(numero); //Saco el nombre
-        console.log("Nombre: " + a);
-        let b = await obtenerCedula(a); //Saco la cedula
-        console.log("Cedula: " + b);
-        let c = await obtenerFecha(b); //Saco fecha
-        console.log("Fecha: " + c);
-
-        let edad = "";
-        if (c == "-") {
-            edad = "-";
-        } else {
-            const [day, month, year] = c.split("/").map(Number);
-            const birthDate = new Date(year, month - 1, day);
-            const today = new Date();
-            
-            let calculatedAge = today.getFullYear() - birthDate.getFullYear();
-            
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                calculatedAge--;
+            // --- VALIDACIONES DE ERROR ---
+            if (type === 'numero') {
+                if (!/^[678]\d{7}$/.test(val)) {
+                    statusEl.style.color = "var(--error-color)";
+                    statusEl.innerText = "⚠️ Teléfono inválido. Debe tener 8 dígitos y empezar con 6, 7 u 8.";
+                    return;
+                }
+            } 
+            else if (type === 'cedula') {
+                if (!/^\d{9}$/.test(val)) {
+                    statusEl.style.color = "var(--error-color)";
+                    statusEl.innerText = "⚠️ Cédula inválida. Debe tener exactamente 9 números.";
+                    return;
+                }
+            } 
+            else if (type === 'nombre' && val.length < 3) {
+                statusEl.style.color = "var(--error-color)";
+                statusEl.innerText = "⚠️ El nombre es muy corto para buscar.";
+                return;
             }
-            
-            edad = calculatedAge;
+
+            statusEl.style.color = "var(--primary)";
+            initSearch(val, type);
+        });
+
+        async function initSearch(query, type) {
+            resultadosContainer.innerHTML = '';
+            let cedulasParaProcesar = [];
+            let telefonoAsociado = "-";
+            let tarjetasCreadas = 0;
+
+            try {
+                if (type === 'numero') {
+                    statusEl.innerHTML = '<div class="spinner"></div><span>Consultando SINPE...</span>';
+                    let nombreEncontrado = await obtenerNombre(query);
+                    if (nombreEncontrado === "-" || !nombreEncontrado) {
+                        statusEl.innerText = "❌ No se encontró dueño para ese número.";
+                        return;
+                    }
+                    telefonoAsociado = query;
+                    statusEl.innerHTML = `<div class="spinner"></div><span>Dueño: ${nombreEncontrado}. Buscando cédulas...</span>`;
+                    cedulasParaProcesar = await obtenerCedulas(nombreEncontrado);
+                } 
+                else if (type === 'nombre') {
+                    statusEl.innerHTML = `<div class="spinner"></div><span>Buscando registros de: ${query}...</span>`;
+                    cedulasParaProcesar = await obtenerCedulas(query);
+                } 
+                else {
+                    cedulasParaProcesar = [{ cedula: query, fullname: "Consultando..." }];
+                }
+
+                if (cedulasParaProcesar.length === 0) {
+                    statusEl.innerText = "❌ No se encontraron resultados en la base de datos.";
+                    return;
+                }
+
+                for (let i of cedulasParaProcesar) {
+                    let cedula = i.cedula?.toString().trim();
+                    if (!cedula || cedula === "0") continue;
+
+                    let [fechaData, tseData] = await Promise.all([
+                        obtenerFechaYEdad(cedula),
+                        obtenerDatosTSE(cedula)
+                    ]);
+
+                    // Si el TSE no devuelve nada, ignoramos este registro para evitar "undefined"
+                    if (!tseData) continue;
+
+                    crearTarjeta({
+                        ...tseData,
+                        edad: fechaData.edad,
+                        nacimiento: fechaData.nacimiento,
+                        telefono: telefonoAsociado,
+                        cedula: cedula
+                    });
+                    tarjetasCreadas++;
+                }
+
+                if (tarjetasCreadas === 0) {
+                    statusEl.innerText = "❌ No hay información disponible para ese criterio.";
+                } else {
+                    statusEl.innerText = `✅ Se encontraron ${tarjetasCreadas} resultado(s).`;
+                }
+
+            } catch (err) {
+                statusEl.innerText = "❌ Error en la conexión.";
+            }
         }
 
-        let provincia = "-";
-        switch(b.charAt(0)) {
-            case "1":
-                provincia = "SAN JOSÉ";
-                break;
-            case "2":
-                provincia = "ALAJUELA";
-                break;
-            case "3":
-                provincia = "CARTAGO";
-                break;
-            case "4":
-                provincia = "HEREDIA";
-                break;
-            case "5":
-                provincia = "GUANACASTE";
-                break;
-            case "6":
-                provincia = "PUNTARENAS";
-                break;
-            case "7":
-                provincia = "LIMÓN";
-                break;
-            case "8":
-                provincia = "EXTRANJERO";
-                break;
+        // --- APIS ---
+
+        async function obtenerNombre(numero) {
+            const url = 'https://webbanking.cajadeande.fi.cr/IEntidadAppPMB/ipmb/obtener_clientemonedero';
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'codnumentidad': '0bf31f97-74d4-4825-a1a3-29a36ffd7f4d',
+                        'numerocliente': numero,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+                const data = await response.json();
+                return data.NombreCliente ? data.NombreCliente.replaceAll('_', ' ').trim().toUpperCase() : "-";
+            } catch (e) { return "-"; }
         }
 
-        let finalData = [b, a, edad, c, provincia, numero]
-
-        for (let i of finalData) {
-            let newTd = document.createElement('td');
-            newTd.innerText = i;
-            newRow.appendChild(newTd);
+        async function obtenerCedulas(nombre) {
+            try {
+                const response = await fetch(`https://apis.gometa.org/cedulas/${nombre}`);
+                const data = await response.json();
+                return data.results || [];
+            } catch (e) { return []; }
         }
-        result.appendChild(newRow);
 
-        status.innerText = "Listo.";
-        document.querySelector("#resultado").style.display = "table";
-    }
+        async function obtenerFechaYEdad(cedula) {
+            let res = { nacimiento: "-", edad: "-" };
+            try {
+                const response = await fetch('https://sicai.pcpuris.com/api/app/ObtieneInfoCedulaAppAdmin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ "cedula": cedula })
+                });
+                const data = await response.json();
+                if (data.nacimiento) {
+                    res.nacimiento = data.nacimiento;
+                    const [d, m, y] = data.nacimiento.split("/").map(Number);
+                    const birth = new Date(y, m - 1, d);
+                    const now = new Date();
+                    let age = now.getFullYear() - birth.getFullYear();
+                    if (now.getMonth() < birth.getMonth() || (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate())) age--;
+                    res.edad = age >= 0 ? age + " años" : "-";
+                }
+            } catch (e) { }
+            return res;
+        }
 
-    async function obtenerNombre(numero) {
-        const url = 'https://webbanking.cajadeande.fi.cr/IEntidadAppPMB/ipmb/obtener_clientemonedero';
+        async function obtenerDatosTSE(cedula) {
+            try {
+                const response = await fetch('https://nocors.sharesrv007.workers.dev/https://www.tse.go.cr/dondevotar/prRemoto.aspx/ObtenerDondeVotar', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json; charset=UTF-8" },
+                    body: JSON.stringify({ "numeroCedula": cedula })
+                });
 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'codnumentidad': '0bf31f97-74d4-4825-a1a3-29a36ffd7f4d',
-                    'numerocliente': numero,
-                    'user-agent': 'Dart/3.5 (dart:io)',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})
+                const data = await response.json();
+
+                // VALIDACIÓN: Si no hay lista o la cédula es 0, el registro no existe
+                if (!data?.d?.lista || data.d.lista.cedula == 0) {
+                    return null;
+                }
+
+                const info = data.d.lista;
+
+                // SOLUCIÓN AL UNDEFINED: Filtramos solo lo que tenga contenido real
+                const nombreCompleto = [info.nombre, info.primerApellido, info.segundoApellido]
+                    .map(part => part?.trim()) // Limpia espacios
+                    .filter(part => part && part !== "undefined") // Elimina nulos o el texto "undefined"
+                    .join(" ");
+
+                return {
+                    nombre: nombreCompleto || "Nombre no disponible",
+                    alias: info.alias || "-",
+                    sexo: info.genero || "-",
+                    provincia: info.descripcionProvincia || "-",
+                    canton: info.descripcionCanton || "-",
+                    distrito: info.descripcionDistrito || "-",
+                    nombrevot: info.nombreCentroVotacion || "-",
+                    direccvot: info.direccionEscuela || "-",
+                    mapa: extraerMapa(info.url) // Función auxiliar para limpiar el mapa
+                };
+            } catch (e) {
+                console.error("Error TSE:", e);
+                return null;
+            }
+        }
+
+        // Función auxiliar para no saturar la principal
+        function extraerMapa(url) {
+            if (url && url.includes("maps")) {
+                let coords = url.split("&")[2]?.slice(3);
+                return coords ? `https://www.google.com/maps/?q=${coords.split(',').slice(0, 2).join(',')}` : "-";
+            }
+            return "-";
+        }
+
+        function crearTarjeta(data) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const campos = [
+                { label: 'Cédula', val: data.cedula },
+                { label: 'Nombre', val: data.nombre },
+                { label: 'Teléfono', val: data.telefono },
+                { label: 'Alias', val: data.alias },
+                { label: 'Sexo', val: data.sexo==1 ? 'Hombre' : 'Mujer' },
+                { label: 'Edad', val: data.edad },
+                { label: 'Nacimiento', val: data.nacimiento },
+                { label: 'Provincia', val: data.provincia },
+                { label: 'Cantón', val: data.canton },
+                { label: 'Distrito', val: data.distrito },
+                { label: 'Centro de Votación', val: data.nombrevot },
+                { label: 'Dirección', val: data.direccvot }
+            ];
+
+            campos.forEach(c => {
+                if (c.val && c.val !== "-") {
+                    const f = document.createElement('div');
+                    f.className = 'field';
+                    f.innerHTML = `<span class="label">${c.label}</span><span class="value">${c.val}</span>`;
+                    card.appendChild(f);
+                }
             });
 
-            const data = await response.json();
-            let nombre = data.NombreCliente;
-            return nombre.replaceAll('_', ' ').trim().toUpperCase();
-        } catch (error) {
-            status.innerText = "Error."
-            console.log("Error en obtenerNombre" + error.message);
-            return "-";
+            if (data.mapa && data.mapa !== "-") {
+                const coords = data.mapa.split('q=')[1];
+                const mapField = document.createElement('div');
+                mapField.className = 'field';
+                mapField.style.gridColumn = "1 / -1";
+                mapField.innerHTML = `
+                    <span class="label">Ubicación de Votación</span>
+                    <div style="width: 100%; height: 250px; margin-top: 10px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd;">
+                        <iframe width="100%" height="100%" frameborder="0" src="https://www.google.com/maps?q=${coords}&output=embed"></iframe>
+                    </div>
+                `;
+                card.appendChild(mapField);
+            }
+            resultadosContainer.appendChild(card);
         }
-    }
-
-    async function obtenerCedula(nombre) {
-        if (nombre == "-") {
-            return "-";
-        }
-
-        const url = `https://apis.gometa.org/cedulas/${nombre}`
-
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-            });
-
-            const data = await response.json();
-            let cedula = data.results[0].cedula
-            return cedula;
-        } catch (error) {
-            console.log("Error en obtenerCedula" + error.message);
-            return "-";
-        }
-    }
-
-    async function obtenerFecha(cedula) {
-        if (cedula == "-") {
-            return "-";
-        }
-        try {
-            const response = await fetch('https://sicai.pcpuris.com/api/app/ObtieneInfoCedulaAppAdmin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8'
-                },
-                body: JSON.stringify({
-                    "cedula": cedula,
-                })
-            });
-
-            const data = await response.json();
-            let fecha = data.nacimiento;
-            return fecha;
-        } catch (error) {
-            console.log("Error en obtenerFecha" + error.message);
-            return "-";
-        }
-    }
-
-</script>
-
+    </script>
+</body>
 
 </html>
