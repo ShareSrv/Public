@@ -550,9 +550,21 @@
                 const H_START = 7;
                 const H_END = 22;
                 const TOTAL_HOURS = H_END - H_START;
+                const VERTICAL_PADDING_PERCENT = 2;
+                const USABLE_HEIGHT_PERCENT = 100 - (VERTICAL_PADDING_PERCENT * 2);
 
                 const colors = ['#1e3a8a', '#b91c1c', '#047857', '#b45309', '#6d28d9', '#be185d', '#0e7490', '#a16207', '#0f766e', '#4338ca'];
                 let colorMap = {};
+
+                function formatHourLabel(hour, minute = 0) {
+                        const period = hour >= 12 ? 'PM' : 'AM';
+                        const hour12 = hour % 12 || 12;
+                        return `${hour12}:${String(minute).padStart(2, '0')} ${period}`;
+                }
+
+                function formatHourRange(startHour, startMinute, endHour, endMinute) {
+                        return `${formatHourLabel(startHour, startMinute)} - ${formatHourLabel(endHour, endMinute)}`;
+                }
 
                 document.addEventListener("DOMContentLoaded", () => {
                         drawRows();
@@ -829,13 +841,24 @@
                                         if (estadoLower.includes('virtual')) estadoBadge += '<span class="badge virt">Virt</span>';
                                         if (estadoLower.includes('asistid')) estadoBadge += '<span class="badge asis">Asis</span>';
 
+                                        const formatHours = g.horarios.map(hStr => {
+                                                const match = hStr.match(/^([LKMJVS])\s+(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})(?:\s*\((.*?)\))?/);
+                                                if (!match) return hStr;
+
+                                                const startHour = parseInt(match[2], 10);
+                                                const startMinute = parseInt(match[3], 10);
+                                                const endHour = parseInt(match[4], 10);
+                                                const endMinute = parseInt(match[5], 10);
+                                                return `${match[1]} ${formatHourRange(startHour, startMinute, endHour, endMinute)}`;
+                                        });
+
                                         gDiv.innerHTML = `
                     <div class="group-header">
                         <div><b>Gr. ${g.grupo}</b> ${estadoBadge}</div>
                         <button style="padding: 2px 6px; font-size: 10px;">${isSelected ? '✕' : '+'}</button>
                     </div>
                     <div style="font-size:10px; color:var(--text-main); font-weight:bold; margin-bottom: 2px;">${g.profesor}</div>
-                    <div style="font-size:10px; color:var(--text-muted);">${g.horarios.join('<br>')}</div>
+                    <div style="font-size:10px; color:var(--text-muted);">${formatHours.join('<br>')}</div>
                 `;
 
                                         gDiv.addEventListener('click', (e) => {
@@ -898,11 +921,11 @@
                         const tl = document.getElementById('time-labels');
                         tl.innerHTML = '';
                         for (let h = H_START; h <= H_END; h++) {
-                                const percent = ((h - H_START) / TOTAL_HOURS) * 100;
+                                const percent = VERTICAL_PADDING_PERCENT + ((h - H_START) / TOTAL_HOURS) * USABLE_HEIGHT_PERCENT;
                                 const lbl = document.createElement('div');
                                 lbl.className = 'time-label';
                                 lbl.style.top = `${percent}%`;
-                                lbl.textContent = `${h}:00`;
+                                lbl.textContent = formatHourLabel(h);
                                 tl.appendChild(lbl);
                         }
                 }
@@ -926,8 +949,8 @@
                                                 const hIni = parseInt(match[2]) + parseInt(match[3]) / 60;
                                                 const hFin = parseInt(match[4]) + parseInt(match[5]) / 60;
 
-                                                const topPercent = ((hIni - H_START) / TOTAL_HOURS) * 100;
-                                                const heightPercent = ((hFin - hIni) / TOTAL_HOURS) * 100;
+                                                const topPercent = VERTICAL_PADDING_PERCENT + ((hIni - H_START) / TOTAL_HOURS) * USABLE_HEIGHT_PERCENT;
+                                                const heightPercent = ((hFin - hIni) / TOTAL_HOURS) * USABLE_HEIGHT_PERCENT;
 
                                                 const col = document.getElementById(`day-${dia}`);
                                                 if (col) {
@@ -937,10 +960,17 @@
                                                         block.style.height = `${heightPercent}%`;
                                                         block.style.backgroundColor = bgColor;
 
+                                                        const displayTime = formatHourRange(
+                                                                parseInt(match[2], 10),
+                                                                parseInt(match[3], 10),
+                                                                parseInt(match[4], 10),
+                                                                parseInt(match[5], 10)
+                                                        );
+
                                                         block.innerHTML = `
                             <span class="e-code">${sel.cursoId} (G.${sel.grupo})</span>
                             <span class="e-prof">${sel.profesor}</span>
-                            <span class="e-prof">${match[2]}:${match[3]}-${match[4]}:${match[5]}</span>
+                            <span class="e-prof">${displayTime}</span>
                             <span class="e-prof">${match[6] ? match[6] : ''}</span>
                         `;
                                                         col.appendChild(block);
