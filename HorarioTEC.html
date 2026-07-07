@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Horarios TEC</title>
+        <style>
+                :root {
+                        --bg-color: #121212;
+                        --surface-color: #1e1e1e;
+                        --surface-hover: #2c2c2c;
+                        --text-main: #e0e0e0;
+                        --text-muted: #a0a0a0;
+                        --accent: #0066cc;
+                        --danger: #cc3333;
+                        --border: #333;
+                        --req-color: #d97706;
+                        --coreq-color: #0ea5e9;
+                        --abre-color: #22c55e;
+                }
+
+                * {
+                        box-sizing: border-box;
+                        margin: 0;
+                        padding: 0;
+                        font-family: sans-serif;
+                }
+
+                body {
+                        background-color: var(--bg-color);
+                        color: var(--text-main);
+                        height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                        overflow: hidden;
+                }
+
+                header {
+                        background-color: var(--surface-color);
+                        padding: 10px 20px;
+                        border-bottom: 1px solid var(--border);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                }
+
+                .upload-section {
+                        display: flex;
+                        gap: 15px;
+                        align-items: center;
+                }
+
+                input[type="file"] {
+                        font-size: 12px;
+                        color: var(--text-muted);
+                }
+
+                button {
+                        background-color: var(--accent);
+                        color: white;
+                        border: none;
+                        padding: 6px 12px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        font-size: 13px;
+                }
+
+                button.btn-danger {
+                        background-color: var(--danger);
+                }
+
+                h3 {
+                        line-height: 1.4;
+                        margin-bottom: 5px;
+                }
+
+                p {
+                        line-height: 1.4;
+                        margin-bottom: 5px;
+                }
+
+                a:visited {
+                        color: var(--accent);
+                }
+
+                .main-container {
+                        display: flex;
+                        flex: 1;
+                        overflow: hidden;
+                }
+
+                .plan-section {
+                        width: 350px;
+                        background-color: var(--surface-color);
+                        border-right: 1px solid var(--border);
+                        overflow-y: auto;
+                        padding: 15px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                }
+
+                .course-box {
+                        background-color: var(--bg-color);
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        padding: 10px;
+                        cursor: pointer;
+                        transition: border-color 0.15s;
+                        position: relative;
+                }
+
+                .course-box:hover {
+                        border-color: var(--accent);
+                }
+
+                .course-box.is-req {
+                        border-color: var(--req-color);
+                        box-shadow: 0 0 6px rgba(217, 119, 6, 0.2);
+                }
+
+                .course-box .code {
+                        font-size: 11px;
+                        font-weight: normal;
+                        white-space: nowrap;
+                }
+
+                .course-box .name {
+                        font-size: 13px;
+                        font-weight: bold;
+                        margin: 4px 0;
+                        line-height: 1.3;
+                }
+
+                .course-box .details {
+                        font-size: 10px;
+                        color: #888;
+                        line-height: 1.4;
+                        margin-top: 4px;
+                }
+
+                .course-box .badge {
+                        font-size: 9px;
+                        padding: 2px 4px;
+                        border-radius: 2px;
+                        margin-left: 2px;
+                        display: inline-block;
+                }
+
+                .badge.semi {
+                        background-color: rgba(234, 179, 8, 0.2);
+                        color: #eab308;
+                        border: 1px solid #eab308;
+                }
+
+                .badge.virt {
+                        background-color: rgba(6, 182, 212, 0.2);
+                        color: #06b6d4;
+                        border: 1px solid #06b6d4;
+                }
+
+                .badge.asis {
+                        background-color: rgba(34, 197, 94, 0.2);
+                        color: #22c55e;
+                        border: 1px solid #22c55e;
+                }
+
+                .groups-container {
+                        margin-top: 8px;
+                        display: none;
+                        flex-direction: column;
+                        gap: 6px;
+                }
+
+                .course-box.expanded .groups-container {
+                        display: flex;
+                }
+
+                .group-item {
+                        background-color: var(--surface-hover);
+                        padding: 8px;
+                        border-radius: 3px;
+                        font-size: 12px;
+                        display: flex;
+                        flex-direction: column;
+                        border: 1px solid transparent;
+                }
+
+                .group-item:hover {
+                        background-color: #333;
+                }
+
+                .group-item.selected {
+                        border-color: var(--accent);
+                        background-color: rgba(0, 102, 204, 0.15);
+                }
+
+                .group-header {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                        align-items: center;
+                        margin-bottom: 4px;
+                }
+
+                .schedule-section {
+                        flex: 1;
+                        padding: 15px;
+                        overflow-y: auto;
+                        display: flex;
+                        flex-direction: column;
+                }
+
+                .calendar {
+                        display: flex;
+                        flex: 1;
+                        background-color: var(--surface-color);
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        overflow: hidden;
+                }
+
+                .time-labels {
+                        width: 50px;
+                        background-color: var(--surface-hover);
+                        border-right: 1px solid var(--border);
+                        position: relative;
+                }
+
+                .time-label {
+                        position: absolute;
+                        width: 100%;
+                        text-align: right;
+                        padding-right: 5px;
+                        font-size: 11px;
+                        color: var(--text-muted);
+                        transform: translateY(-50%);
+                }
+
+                .day-column {
+                        flex: 1;
+                        border-right: 1px solid var(--border);
+                        position: relative;
+                        background-size: 100% calc(100% / 15);
+                        background-image: linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+                }
+
+                .day-column:last-child {
+                        border-right: none;
+                }
+
+                .day-header {
+                        text-align: center;
+                        padding: 8px 0;
+                        background-color: var(--surface-hover);
+                        font-weight: bold;
+                        border-bottom: 1px solid var(--border);
+                        font-size: 13px;
+                }
+
+                .event-block {
+                        position: absolute;
+                        left: 2px;
+                        right: 2px;
+                        border-radius: 3px;
+                        padding: 4px;
+                        font-size: 10px;
+                        color: white;
+                        overflow: hidden;
+                        opacity: 0.9;
+                        transition: opacity 0.1s;
+                        display: flex;
+                        flex-direction: column;
+                }
+
+                .event-block:hover {
+                        opacity: 1;
+                        z-index: 10;
+                }
+
+                .event-block .e-code {
+                        font-weight: bold;
+                        font-size: 11px;
+                }
+
+                .event-block .e-prof {
+                        font-size: 9px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                }
+
+                .modal {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.85);
+                        z-index: 1000;
+                        flex-direction: column;
+                        padding: 20px;
+                }
+
+                .modal-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 20px;
+                }
+
+                .modal-header h3 {
+                        color: white;
+                }
+
+                .legend {
+                        display: flex;
+                        gap: 15px;
+                        font-size: 12px;
+                        color: var(--text-muted);
+                }
+
+                .legend span {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                }
+
+                .legend-color {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 2px;
+                }
+
+                .plan-grid-container {
+                        flex: 1;
+                        background-color: var(--surface-color);
+                        border-radius: 6px;
+                        border: 1px solid var(--border);
+                        overflow: auto;
+                        position: relative;
+                        padding: 30px;
+                }
+
+                .plan-grid {
+                        display: flex;
+                        gap: 40px;
+                        position: relative;
+                        min-height: 100%;
+                        width: max-content;
+                }
+
+                .plan-col {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                        width: 190px;
+                        z-index: 2;
+                }
+
+                .col-title {
+                        text-align: center;
+                        font-size: 12px;
+                        font-weight: bold;
+                        color: var(--text-muted);
+                        margin-bottom: 10px;
+                        border-bottom: 1px solid var(--border);
+                        padding-bottom: 5px;
+                }
+
+                .modal-course-box {
+                        background-color: var(--bg-color);
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        padding: 10px;
+                        font-size: 11px;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        position: relative;
+                }
+
+                .modal-course-box:hover {
+                        border-color: white;
+                        transform: scale(1.05);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                        z-index: 10;
+                }
+
+                .modal-course-box .name {
+                        font-weight: bold;
+                        margin-bottom: 4px;
+                        line-height: 1.25;
+                }
+
+                .modal-course-box .code {
+                        color: var(--text-muted);
+                        font-size: 10px;
+                }
+
+                #plan-lines {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        pointer-events: none;
+                        z-index: 1;
+                }
+
+                .highlight-req {
+                        border-color: var(--req-color) !important;
+                        background: #3d2d0b;
+                }
+
+                .highlight-abre {
+                        border-color: var(--abre-color) !important;
+                        background: #0a2e1a;
+                }
+        </style>
+</head>
+
+<body>
+
+        <header>
+                <h3>Horarios TEC</h3>
+                <div class="upload-section">
+                        <div>
+                                <label for="plan-file">Plan de Estudios:</label>
+                                <input type="file" id="plan-file" accept=".html">
+                        </div>
+                        <div>
+                                <label for="semestre-file">Semestre:</label>
+                                <input type="file" id="semestre-file" accept=".html">
+                        </div>
+                        <button onclick="abrirTutorial()">Tutorial</button>
+                        <button onclick="abrirPlanEstudios()">Plan de Estudios</button>
+                        <button class="btn-danger" onclick="clearData()">Limpiar Datos</button>
+                </div>
+        </header>
+
+        <div class="main-container">
+                <div class="plan-section" id="plan-container"></div>
+                <div class="schedule-section">
+                        <div class="calendar">
+                                <div class="time-labels" id="time-labels"></div>
+                                <div class="day-column" id="day-L">
+                                        <div class="day-header">Lun</div>
+                                </div>
+                                <div class="day-column" id="day-K">
+                                        <div class="day-header">Mar</div>
+                                </div>
+                                <div class="day-column" id="day-M">
+                                        <div class="day-header">Mié</div>
+                                </div>
+                                <div class="day-column" id="day-J">
+                                        <div class="day-header">Jue</div>
+                                </div>
+                                <div class="day-column" id="day-V">
+                                        <div class="day-header">Vie</div>
+                                </div>
+                                <div class="day-column" id="day-S">
+                                        <div class="day-header">Sáb</div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+
+        <div id="modal-tutorial" class="modal">
+                <div class="modal-header">
+                        <h3>Tutorial</h3>
+                        <button onclick="cerrarTutorial()">Cerrar</button>
+                </div>
+                <div class="modal-content">
+                        <p>Para utilizar esta herramienta, primero debes cargar el plan de estudios y el semestre.</p>
+                        <p>Sólo se permiten las páginas del TEC a partir de estos métodos.</p>
+                        <p>Sólo se filtra la sede de Cartago.</p>
+                        <p>Es experimental así que puede romperse.</p>
+                        <br>
+                        <h3>Plan de Estudios</h3>
+
+                        <br>
+
+                        <p>1. Busca tu plan de estudios la página del TEC (Ej: <a
+                                        href="https://www.tec.ac.cr/licenciatura-ingenieria-computadores">https://www.tec.ac.cr/licenciatura-ingenieria-computadores</a>)
+                        </p>
+                        <p>2. Una vez en la página, haz click derecho en cualquier lado y selecciona "Guardar como..."
+                        </p>
+                        <p>3. Descarga el archivo como Página Web o .html</p>
+                        <p>4. Carga el archivo en esta página en la sección de "Plan de Estudios" de arriba.</p>
+
+                        <br>
+
+                        <h3>Semestre</h3>
+                        <br>
+                        <p>1. Ingresa al <a href="https://tec-appsext.itcr.ac.cr/matricula">Sistema de Matrícula</a></p>
+                        <p>2. Selecciona el semestre a cursar."
+                        </p>
+                        <p>3. Haz click o abre los cursos que deseas mostrar.</p>
+                        <p>4. Haz click derecho en cualquier lado y selecciona "Guardar como...".</p>
+                        <p>5. Descarga el archivo como Página Web o .html</p>
+                        <p>6. Carga el archivo en esta página en la sección de "Semestre" de arriba.</p>
+
+                        <br>
+
+                        <h3>Cómo Usar</h3>
+                        <p>&bullet; A la izquierda saldrán los cursos que seleccionaste en la sección del Semestre. Selecciona cualquiera de ellos y luego selecciona un horario. Este se mostrará en el horario a la derecha.</p>
+
+                        <p>&bullet; Arriba a la derecha puedes abrir el Plan de Estudios. Aquí puedes colocar el mouse sobre los cursos para ver sus requisitos y corequisitos.</p>
+
+                        <p>&bullet; También puedes eliminar los datos en el botón rojo.</p>
+
+                        <p>&bullet; El plan, semestre y cursos seleccionados se guardan aunque salgas de la página.</p>
+                </div>
+        </div>
+
+        <div id="modal-plan" class="modal">
+                <div class="modal-header">
+                        <h3>Plan de Estudios Completo</h3>
+                        <div class="legend">
+                                <span>
+                                        <div class="legend-color" style="background: var(--req-color);"></div>
+                                        Requisitos
+                                </span>
+                                <span>
+                                        <div class="legend-color" style="background: var(--coreq-color);"></div>
+                                        Co-requisitos
+                                </span>
+                                <span>
+                                        <div class="legend-color" style="background: var(--abre-color);"></div> Abre a
+                                </span>
+                        </div>
+                        <button onclick="cerrarPlanEstudios()">Cerrar</button>
+                </div>
+                <div class="plan-grid-container" id="modal-scroll-container">
+                        <svg id="plan-lines"></svg>
+                        <div class="plan-grid" id="plan-grid"></div>
+                </div>
+        </div>
+
+        <script>
+                let planData = [];
+                let ofertaData = [];
+                let selectedGroups = [];
+                let expandedCourses = new Set();
+
+                const H_START = 7;
+                const H_END = 22;
+                const TOTAL_HOURS = H_END - H_START;
+
+                const colors = ['#1e3a8a', '#b91c1c', '#047857', '#b45309', '#6d28d9', '#be185d', '#0e7490', '#a16207', '#0f766e', '#4338ca'];
+                let colorMap = {};
+
+                document.addEventListener("DOMContentLoaded", () => {
+                        drawRows();
+                        loadStorage();
+                });
+
+                function capitalCase(str) {
+                        if (!str) return '';
+                        const esRomano = /^[ivx]+$/i;
+                        return str.trim().split(/\s+/).map((palabra, idx) => {
+                                if (esRomano.test(palabra)) return palabra.toUpperCase();
+                                if (idx === 0) return palabra.charAt(0).toUpperCase() + palabra.slice(1);
+                                return palabra;
+                        }).join(' ');
+                }
+
+                function extraerCodigos(labelEl) {
+                        if (!labelEl) return [];
+                        const popback = labelEl.querySelector('.popback');
+                        const raw = popback ? popback.textContent : labelEl.textContent;
+                        return raw.split(',')
+                                .map(s => s.trim())
+                                .filter(s => s && s.toLowerCase() !== 'no hay');
+                }
+
+                function parsearBox(box, semestre, semestreLabel) {
+                        let id = box.querySelector('.code')?.textContent.replace('-', '').trim() || '';
+                        let nombre = capitalCase(box.querySelector('.name')?.textContent || '');
+
+                        let creditos = "";
+                        let horas = "";
+                        box.querySelectorAll('.block').forEach(block => {
+                                const label = block.querySelector('.label');
+                                const circle = block.querySelector('.circle');
+                                if (label && circle) {
+                                        const labelText = label.textContent.toLowerCase();
+                                        if (labelText.includes('crédito') || labelText.includes('credito')) creditos = circle.textContent.trim();
+                                        else if (labelText.includes('hora')) horas = circle.textContent.trim();
+                                }
+                        });
+
+                        let reqs = [];
+                        const reqSection = box.querySelector('.requirements');
+                        if (reqSection) {
+                                reqSection.querySelectorAll('.requirement .label3').forEach(lbl => {
+                                        reqs.push(...extraerCodigos(lbl));
+                                });
+                        }
+
+                        let coreqs = [];
+                        const coreqSection = box.querySelector('.corequirement');
+                        if (coreqSection) {
+                                coreqSection.querySelectorAll('.label3').forEach(lbl => {
+                                        coreqs.push(...extraerCodigos(lbl));
+                                });
+                        }
+
+                        if (id && !planData.find(m => m.id === id)) {
+                                planData.push({
+                                        id,
+                                        nombre,
+                                        creditos,
+                                        horas,
+                                        semestre,
+                                        semestreLabel,
+                                        requisitos: reqs,
+                                        corequisitos: coreqs,
+                                        es_requisito_de: [],
+                                        es_corequisito_de: []
+                                });
+                        }
+                }
+
+                document.getElementById('plan-file').addEventListener('change', function (e) {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        const reader = new FileReader();
+                        reader.onload = function (evt) {
+                                const doc = new DOMParser().parseFromString(evt.target.result, 'text/html');
+
+                                const bloqueLabels = {};
+                                doc.querySelectorAll('.slider-nav .tabs:not(.slick-cloned)').forEach(tab => {
+                                        const idx = tab.getAttribute('data-slick-index');
+                                        if (idx !== null && !(idx in bloqueLabels)) {
+                                                bloqueLabels[idx] = tab.textContent.trim();
+                                        }
+                                });
+
+                                const slides = Array.from(doc.querySelectorAll('.slider-single .slick-track > .slick-slide'))
+                                        .filter(s => !s.classList.contains('slick-cloned'));
+
+                                planData = [];
+
+                                if (slides.length > 0) {
+                                        slides.forEach(slide => {
+                                                const idx = slide.getAttribute('data-slick-index');
+                                                const semestre = idx !== null ? parseInt(idx, 10) : 0;
+                                                const label = bloqueLabels[idx] || `Bloque ${semestre}`;
+                                                slide.querySelectorAll(':scope > .box').forEach(box => {
+                                                        parsearBox(box, semestre, label);
+                                                });
+                                        });
+                                } else {
+                                        doc.querySelectorAll('.box').forEach(box => parsearBox(box, 0, 'Plan de Estudios'));
+                                }
+
+                                if (planData.length === 0) {
+                                        alert("Error: Archivo de plan inválido.");
+                                        return;
+                                }
+
+                                planData.forEach(curso => {
+                                        curso.requisitos.forEach(req => {
+                                                let parent = planData.find(p => p.id === req);
+                                                if (parent) parent.es_requisito_de.push(curso.id);
+                                        });
+                                        curso.corequisitos.forEach(coreq => {
+                                                let parent = planData.find(p => p.id === coreq);
+                                                if (parent) parent.es_corequisito_de.push(curso.id);
+                                        });
+                                });
+
+                                saveData();
+                        };
+                        reader.readAsText(file);
+                });
+
+                document.getElementById('semestre-file').addEventListener('change', function (e) {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        const reader = new FileReader();
+                        reader.onload = function (evt) {
+                                const doc = new DOMParser().parseFromString(evt.target.result, 'text/html');
+                                const filasCursos = Array.from(doc.querySelectorAll('tr[id]:not(.Rowaccordion)')).filter(tr => {
+                                        const img = tr.querySelector('.imgAccordion');
+                                        return img && img.src.includes('openlevel.png');
+                                });
+
+                                if (filasCursos.length === 0) {
+                                        alert("Error: No se encontraron cursos abiertos. Por favor abre o selecciona todos los cursos en el Sistema de Matrícula.");
+                                        return;
+                                }
+
+                                ofertaData = [];
+                                filasCursos.forEach(filaCurso => {
+                                        const idCurso = filaCurso.getAttribute('id');
+                                        const nombreEl = filaCurso.querySelector(`.colMateria #nombre${idCurso}`) || filaCurso.querySelector('.colMateria');
+                                        const nombreCurso = nombreEl ? nombreEl.textContent.trim() : '';
+
+                                        const filaHorario = doc.getElementById(`trH${idCurso}`);
+                                        const grupos = [];
+
+                                        if (filaHorario) {
+                                                filaHorario.querySelectorAll('.tableHorarios tbody tr').forEach(filaGrupo => {
+                                                        const sede = filaGrupo.querySelector('.colHoSede')?.textContent.trim().toUpperCase() || '';
+
+                                                        if (sede.includes('CARTAGO')) {
+                                                                const numGrupo = filaGrupo.querySelector('.colHoGrupo')?.textContent.trim() || '';
+                                                                const profesor = filaGrupo.querySelector('.colHoProfesor')?.textContent.trim() || 'Sin Profesor';
+                                                                const estado = filaGrupo.querySelector('.colHoEstado')?.textContent.trim() || '';
+                                                                const horarioEl = filaGrupo.querySelector('.colHoHorario');
+
+                                                                let horarios = [];
+                                                                if (horarioEl) {
+                                                                        let bloques = Array.from(horarioEl.childNodes).map(n => n.textContent.trim()).filter(t => t !== '');
+                                                                        for (let i = 0; i < bloques.length; i += 2) {
+                                                                                if (bloques[i]) horarios.push(bloques[i] + (bloques[i + 1] ? ` (${bloques[i + 1]})` : ''));
+                                                                        }
+                                                                }
+
+                                                                if (numGrupo) {
+                                                                        grupos.push({ grupo: numGrupo, profesor, horarios, estado });
+                                                                }
+                                                        }
+                                                });
+                                        }
+                                        if (grupos.length > 0) {
+                                                ofertaData.push({ id: idCurso, nombre: nombreCurso, grupos });
+                                        }
+                                });
+
+                                saveData();
+                        };
+                        reader.readAsText(file);
+                });
+
+                function saveData() {
+                        localStorage.setItem('tec_plan', JSON.stringify(planData));
+                        localStorage.setItem('tec_oferta', JSON.stringify(ofertaData));
+                        localStorage.setItem('tec_selections', JSON.stringify(selectedGroups));
+
+                        setColors();
+                        renderPlan();
+                        renderSchedule();
+                }
+
+                function loadStorage() {
+                        const p = localStorage.getItem('tec_plan');
+                        const o = localStorage.getItem('tec_oferta');
+                        const s = localStorage.getItem('tec_selections');
+
+                        if (p) planData = JSON.parse(p);
+                        if (o) ofertaData = JSON.parse(o);
+                        if (s) selectedGroups = JSON.parse(s);
+
+                        if (planData.length > 0 || ofertaData.length > 0) {
+                                saveData();
+                        }
+                }
+
+                function clearData() {
+                        localStorage.clear();
+                        planData = []; ofertaData = []; selectedGroups = [];
+                        expandedCourses.clear();
+                        saveData();
+                }
+
+                function setColors() {
+                        let colorIdx = 0;
+                        ofertaData.forEach(curso => {
+                                if (!colorMap[curso.id]) {
+                                        colorMap[curso.id] = colors[colorIdx % colors.length];
+                                        colorIdx++;
+                                }
+                        });
+                }
+
+                function renderPlan() {
+                        const container = document.getElementById('plan-container');
+                        container.innerHTML = '';
+
+                        if (ofertaData.length === 0) return;
+
+                        ofertaData.forEach(curso => {
+                                const datosPlan = planData.find(p => p.id === curso.id) || {
+                                        creditos: '', horas: '', requisitos: [], corequisitos: [], es_requisito_de: [], es_corequisito_de: []
+                                };
+
+                                const box = document.createElement('div');
+                                box.className = 'course-box';
+                                if (expandedCourses.has(curso.id)) box.classList.add('expanded');
+                                box.dataset.id = curso.id;
+
+                                let detailsHTML = '';
+                                if (datosPlan.requisitos.length) detailsHTML += `<b>Req:</b> ${datosPlan.requisitos.join(', ')}<br>`;
+                                if (datosPlan.corequisitos.length) detailsHTML += `<b>Co-req:</b> ${datosPlan.corequisitos.join(', ')}<br>`;
+                                if (datosPlan.es_requisito_de.length) detailsHTML += `<b>Abre:</b> ${datosPlan.es_requisito_de.join(', ')}<br>`;
+                                if (datosPlan.es_corequisito_de.length) detailsHTML += `<b>Co-req de:</b> ${datosPlan.es_corequisito_de.join(', ')}`;
+
+                                box.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                    <div class="name">${curso.nombre} <span class="code" style="color: ${colorMap[curso.id]}">(${curso.id})</span></div>
+                    <div style="font-size: 11px; color: var(--text-muted); white-space: nowrap;">
+                        ${datosPlan.creditos ? `Cr: ${datosPlan.creditos}` : ''} 
+                        ${datosPlan.horas ? `| Hr: ${datosPlan.horas}` : ''}
+                    </div>
+                </div>
+                <div class="details">${detailsHTML}</div>
+            `;
+
+                                const groupCont = document.createElement('div');
+                                groupCont.className = 'groups-container';
+
+                                curso.grupos.forEach(g => {
+                                        const gDiv = document.createElement('div');
+                                        gDiv.className = 'group-item';
+
+                                        const isSelected = selectedGroups.some(sel => sel.cursoId === curso.id && sel.grupo === g.grupo);
+                                        if (isSelected) gDiv.classList.add('selected');
+
+                                        let estadoBadge = '';
+                                        const estadoLower = g.estado.toLowerCase();
+                                        if (estadoLower.includes('semipresencial')) estadoBadge += '<span class="badge semi">Semi</span>';
+                                        if (estadoLower.includes('virtual')) estadoBadge += '<span class="badge virt">Virt</span>';
+                                        if (estadoLower.includes('asistid')) estadoBadge += '<span class="badge asis">Asis</span>';
+
+                                        gDiv.innerHTML = `
+                    <div class="group-header">
+                        <div><b>Gr. ${g.grupo}</b> ${estadoBadge}</div>
+                        <button style="padding: 2px 6px; font-size: 10px;">${isSelected ? '✕' : '+'}</button>
+                    </div>
+                    <div style="font-size:10px; color:var(--text-main); font-weight:bold; margin-bottom: 2px;">${g.profesor}</div>
+                    <div style="font-size:10px; color:var(--text-muted);">${g.horarios.join('<br>')}</div>
+                `;
+
+                                        gDiv.addEventListener('click', (e) => {
+                                                e.stopPropagation();
+                                                toggleSelection(curso.id, curso.nombre, g);
+                                        });
+
+                                        groupCont.appendChild(gDiv);
+                                });
+
+                                box.appendChild(groupCont);
+
+                                box.addEventListener('click', () => {
+                                        box.classList.toggle('expanded');
+                                        if (box.classList.contains('expanded')) expandedCourses.add(curso.id);
+                                        else expandedCourses.delete(curso.id);
+                                });
+
+                                box.addEventListener('mouseenter', () => mostrarRutas(datosPlan.requisitos));
+                                box.addEventListener('mouseleave', quitarRutas);
+
+                                container.appendChild(box);
+                        });
+                }
+
+                function mostrarRutas(requisitos) {
+                        if (!requisitos || requisitos.length === 0) return;
+                        document.querySelectorAll('.course-box').forEach(box => {
+                                if (requisitos.includes(box.dataset.id)) {
+                                        box.classList.add('is-req');
+                                }
+                        });
+                }
+
+                function quitarRutas() {
+                        document.querySelectorAll('.course-box').forEach(box => box.classList.remove('is-req'));
+                }
+
+                function toggleSelection(cursoId, cursoNombre, grupoObj) {
+                        const idx = selectedGroups.findIndex(s => s.cursoId === cursoId && s.grupo === grupoObj.grupo);
+
+                        if (idx > -1) {
+                                selectedGroups.splice(idx, 1);
+                        } else {
+                                const existenteIdx = selectedGroups.findIndex(s => s.cursoId === cursoId);
+                                if (existenteIdx > -1) selectedGroups.splice(existenteIdx, 1);
+
+                                selectedGroups.push({
+                                        cursoId,
+                                        nombre: cursoNombre,
+                                        grupo: grupoObj.grupo,
+                                        profesor: grupoObj.profesor,
+                                        horarios: grupoObj.horarios
+                                });
+                        }
+                        saveData();
+                }
+
+                function drawRows() {
+                        const tl = document.getElementById('time-labels');
+                        tl.innerHTML = '';
+                        for (let h = H_START; h <= H_END; h++) {
+                                const percent = ((h - H_START) / TOTAL_HOURS) * 100;
+                                const lbl = document.createElement('div');
+                                lbl.className = 'time-label';
+                                lbl.style.top = `${percent}%`;
+                                lbl.textContent = `${h}:00`;
+                                tl.appendChild(lbl);
+                        }
+                }
+
+                function renderSchedule() {
+                        const days = ['L', 'K', 'M', 'J', 'V', 'S'];
+                        days.forEach(d => {
+                                const col = document.getElementById(`day-${d}`);
+                                Array.from(col.children).forEach(child => {
+                                        if (!child.classList.contains('day-header')) child.remove();
+                                });
+                        });
+
+                        selectedGroups.forEach(sel => {
+                                const bgColor = colorMap[sel.cursoId] || '#555';
+
+                                sel.horarios.forEach(hStr => {
+                                        const match = hStr.match(/^([LKMJVS])\s+(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})(?:\s*\((.*?)\))?/);
+                                        if (match) {
+                                                const dia = match[1];
+                                                const hIni = parseInt(match[2]) + parseInt(match[3]) / 60;
+                                                const hFin = parseInt(match[4]) + parseInt(match[5]) / 60;
+
+                                                const topPercent = ((hIni - H_START) / TOTAL_HOURS) * 100;
+                                                const heightPercent = ((hFin - hIni) / TOTAL_HOURS) * 100;
+
+                                                const col = document.getElementById(`day-${dia}`);
+                                                if (col) {
+                                                        const block = document.createElement('div');
+                                                        block.className = 'event-block';
+                                                        block.style.top = `${topPercent}%`;
+                                                        block.style.height = `${heightPercent}%`;
+                                                        block.style.backgroundColor = bgColor;
+
+                                                        block.innerHTML = `
+                            <span class="e-code">${sel.cursoId} (G.${sel.grupo})</span>
+                            <span class="e-prof">${sel.profesor}</span>
+                            <span class="e-prof">${match[2]}:${match[3]}-${match[4]}:${match[5]}</span>
+                            <span class="e-prof">${match[6] ? match[6] : ''}</span>
+                        `;
+                                                        col.appendChild(block);
+                                                }
+                                        }
+                                });
+                        });
+                }
+
+                function abrirTutorial() {
+                        document.getElementById('modal-tutorial').style.display = 'flex';
+                }
+
+                function cerrarTutorial() {
+                        document.getElementById('modal-tutorial').style.display = 'none';
+                }
+
+                function abrirPlanEstudios() {
+                        if (planData.length === 0) {
+                                alert('Primero carga un archivo de Plan de Estudios.');
+                                return;
+                        }
+                        document.getElementById('modal-plan').style.display = 'flex';
+                        renderizarPlanEstudios();
+                }
+
+                function cerrarPlanEstudios() {
+                        document.getElementById('modal-plan').style.display = 'none';
+                        document.getElementById('plan-lines').innerHTML = '';
+                }
+
+                function renderizarPlanEstudios() {
+                        const grid = document.getElementById('plan-grid');
+                        const svg = document.getElementById('plan-lines');
+                        grid.innerHTML = '';
+                        svg.innerHTML = '';
+
+                        const grupos = {};
+                        planData.forEach(c => {
+                                const key = c.semestre !== undefined ? c.semestre : 0;
+                                if (!grupos[key]) grupos[key] = { label: c.semestreLabel || `Semestre ${key}`, cursos: [] };
+                                grupos[key].cursos.push(c);
+                        });
+
+                        const clavesOrdenadas = Object.keys(grupos).map(Number).sort((a, b) => a - b);
+
+                        clavesOrdenadas.forEach(key => {
+                                const grupo = grupos[key];
+                                const colDiv = document.createElement('div');
+                                colDiv.className = 'plan-col';
+                                colDiv.innerHTML = `<div class="col-title">${grupo.label}</div>`;
+
+                                grupo.cursos.forEach(curso => {
+                                        const box = document.createElement('div');
+                                        box.className = 'modal-course-box';
+                                        box.id = `modal-course-${curso.id}`;
+
+                                        const bgColor = colorMap[curso.id] || '#555';
+                                        box.style.borderLeft = `4px solid ${bgColor}`;
+
+                                        box.innerHTML = `
+                    <div class="name">${curso.nombre}</div>
+                    <div class="code" style="color: ${bgColor}">(${curso.id})</div>
+                `;
+
+                                        box.addEventListener('mouseenter', () => mostrarConexiones(curso));
+                                        box.addEventListener('mouseleave', quitarConexiones);
+
+                                        colDiv.appendChild(box);
+                                });
+                                grid.appendChild(colDiv);
+                        });
+                }
+
+                function mostrarConexiones(curso) {
+                        quitarConexiones();
+
+                        const svg = document.getElementById('plan-lines');
+                        const container = document.getElementById('modal-scroll-container');
+                        const sourceBox = document.getElementById(`modal-course-${curso.id}`);
+                        if (!sourceBox) return;
+
+                        const cRect = container.getBoundingClientRect();
+
+                        function drawLine(targetId, color, isDashed, highlightClass) {
+                                const targetBox = document.getElementById(`modal-course-${targetId}`);
+                                if (!targetBox) return;
+
+                                targetBox.classList.add(highlightClass);
+
+                                const sRect = sourceBox.getBoundingClientRect();
+                                const tRect = targetBox.getBoundingClientRect();
+
+                                const sx = sRect.left + sRect.width / 2 - cRect.left + container.scrollLeft;
+                                const sy = sRect.top + sRect.height / 2 - cRect.top + container.scrollTop;
+                                const tx = tRect.left + tRect.width / 2 - cRect.left + container.scrollLeft;
+                                const ty = tRect.top + tRect.height / 2 - cRect.top + container.scrollTop;
+
+                                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                                const d = `M ${sx} ${sy} C ${(sx + tx) / 2} ${sy}, ${(sx + tx) / 2} ${ty}, ${tx} ${ty}`;
+                                path.setAttribute('d', d);
+                                path.setAttribute('stroke', color);
+                                path.setAttribute('stroke-width', '2');
+                                path.setAttribute('fill', 'none');
+                                path.setAttribute('opacity', '0.8');
+                                if (isDashed) path.setAttribute('stroke-dasharray', '5,5');
+
+                                svg.appendChild(path);
+                        }
+
+                        (curso.requisitos || []).forEach(req => drawLine(req, 'var(--req-color)', false, 'highlight-req'));
+                        (curso.corequisitos || []).forEach(req => drawLine(req, 'var(--coreq-color)', true, 'highlight-req'));
+                        (curso.es_requisito_de || []).forEach(req => drawLine(req, 'var(--abre-color)', false, 'highlight-abre'));
+                }
+
+                function quitarConexiones() {
+                        document.getElementById('plan-lines').innerHTML = '';
+                        document.querySelectorAll('.modal-course-box').forEach(el => {
+                                el.classList.remove('highlight-req', 'highlight-abre');
+                        });
+                }
+        </script>
+</body>
+
+</html>
