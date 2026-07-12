@@ -536,32 +536,44 @@
 
                         <br>
 
-                        <p>1. Busca tu plan de estudios la página del TEC (Ej: <a
+                        <p>1. Busca tu plan de estudios la página del TEC (La página que contiene los bloques y cursos.
+                                Ej: <a
                                         href="https://www.tec.ac.cr/licenciatura-ingenieria-computadores">https://www.tec.ac.cr/licenciatura-ingenieria-computadores</a>)
                         </p>
                         <p>2. Una vez en la página, haz click derecho en cualquier lado y selecciona "Guardar como..."
                         </p>
                         <p>3. Descarga el archivo como Página Web o .html</p>
+                        <p>(Como referencia, el nombre suele ser: "Licenciatura en Carrera _
+                                TEC.html")</p>
                         <p>4. Carga el archivo en esta página en la sección de "Plan de Estudios" de arriba.</p>
 
                         <br>
 
                         <h3>Semestre</h3>
                         <br>
-                        <p>1. Ingresa al <a href="https://tec-appsext.itcr.ac.cr/matricula">Sistema de Matrícula</a></p>
-                        <p>2. Selecciona el semestre a cursar."
+                        <p>1. Ingresa al <a href="https://tec-appsext.itcr.ac.cr/matricula">Sistema de Matrícula</a>.
                         </p>
-                        <p>3. Haz click o abre los cursos que deseas mostrar.</p>
+                        <p>2. Selecciona el semestre a cursar.
+                        </p>
+                        <p>3. Haz click o abre los cursos que deseas mostrar (El símbolo ">" a la izquierda debe ir
+                                hacia abajo).</p>
                         <p>4. Haz click derecho en cualquier lado y selecciona "Guardar como...".</p>
                         <p>5. Descarga el archivo como Página Web o .html</p>
+                        <p>(Como referencia, el nombre suele ser: "Sistema de Matrícula del TEC.html")</p>
                         <p>6. Carga el archivo en esta página en la sección de "Semestre" de arriba.</p>
 
                         <br>
 
                         <h3>Cómo Usar</h3>
-                        <p>&bullet; A la izquierda saldrán los cursos que seleccionaste en la sección del Semestre. Selecciona cualquiera de ellos y luego selecciona un horario. Este se mostrará en el horario a la derecha.</p>
+                        <p>&bullet; A la izquierda saldrán los cursos que seleccionaste en la sección del Semestre.</p>
 
-                        <p>&bullet; Arriba a la derecha puedes abrir el Plan de Estudios. Aquí puedes colocar el mouse sobre los cursos para ver sus requisitos y corequisitos.</p>
+                        <p>&bullet; Selecciona cualquier curso y luego selecciona un horario. Este se mostrará en el
+                                horario a la derecha.</p>
+
+                        <p>&bullet; Arriba a la derecha puedes abrir el Plan de Estudios.</p>
+
+                        <p>&bullet; En el Plan de Estudios puedes colocar el mouse sobre los cursos para ver sus
+                                requisitos y corequisitos.</p>
 
                         <p>&bullet; También puedes eliminar los datos en el botón rojo.</p>
 
@@ -571,7 +583,7 @@
 
         <div id="modal-plan" class="modal">
                 <div class="modal-header">
-                        <h3>Plan de Estudios</h3>
+                        <h3>Plan de Estudios Completo</h3>
                         <div class="legend">
                                 <span>
                                         <div class="legend-color" style="background: var(--req-color);"></div>
@@ -603,9 +615,21 @@
                 const H_START = 7;
                 const H_END = 22;
                 const TOTAL_HOURS = H_END - H_START;
+                const VERTICAL_PADDING_PERCENT = 2;
+                const USABLE_HEIGHT_PERCENT = 100 - (VERTICAL_PADDING_PERCENT * 2);
 
                 const colors = ['#1e3a8a', '#b91c1c', '#047857', '#b45309', '#6d28d9', '#be185d', '#0e7490', '#a16207', '#0f766e', '#4338ca'];
                 let colorMap = {};
+
+                function formatHourLabel(hour, minute = 0) {
+                        const period = hour >= 12 ? 'PM' : 'AM';
+                        const hour12 = hour % 12 || 12;
+                        return `${hour12}:${String(minute).padStart(2, '0')} ${period}`;
+                }
+
+                function formatHourRange(startHour, startMinute, endHour, endMinute) {
+                        return `${formatHourLabel(startHour, startMinute)} - ${formatHourLabel(endHour, endMinute)}`;
+                }
 
                 document.addEventListener("DOMContentLoaded", () => {
                         drawRows();
@@ -938,13 +962,24 @@
                                         if (estadoLower.includes('virtual')) estadoBadge += '<span class="badge virt">Virt</span>';
                                         if (estadoLower.includes('asistid')) estadoBadge += '<span class="badge asis">Asis</span>';
 
+                                        const formatHours = g.horarios.map(hStr => {
+                                                const match = hStr.match(/^([LKMJVS])\s+(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})(?:\s*\((.*?)\))?/);
+                                                if (!match) return hStr;
+
+                                                const startHour = parseInt(match[2], 10);
+                                                const startMinute = parseInt(match[3], 10);
+                                                const endHour = parseInt(match[4], 10);
+                                                const endMinute = parseInt(match[5], 10);
+                                                return `${match[1]} ${formatHourRange(startHour, startMinute, endHour, endMinute)}`;
+                                        });
+
                                         gDiv.innerHTML = `
                     <div class="group-header">
                         <div><b>Gr. ${g.grupo}</b> ${estadoBadge}</div>
                         <button style="padding: 2px 6px; font-size: 10px;">${isSelected ? '✕' : '+'}</button>
                     </div>
                     <div style="font-size:10px; color:var(--text-main); font-weight:bold; margin-bottom: 2px;">${g.profesor}</div>
-                    <div style="font-size:10px; color:var(--text-muted);">${g.horarios.join('<br>')}</div>
+                    <div style="font-size:10px; color:var(--text-muted);">${formatHours.join('<br>')}</div>
                 `;
 
                                         gDiv.addEventListener('click', (e) => {
@@ -1007,11 +1042,11 @@
                         const tl = document.getElementById('time-labels');
                         tl.innerHTML = '';
                         for (let h = H_START; h <= H_END; h++) {
-                                const percent = ((h - H_START) / TOTAL_HOURS) * 100;
+                                const percent = VERTICAL_PADDING_PERCENT + ((h - H_START) / TOTAL_HOURS) * USABLE_HEIGHT_PERCENT;
                                 const lbl = document.createElement('div');
                                 lbl.className = 'time-label';
                                 lbl.style.top = `${percent}%`;
-                                lbl.textContent = `${h}:00`;
+                                lbl.textContent = formatHourLabel(h);
                                 tl.appendChild(lbl);
                         }
                 }
@@ -1035,8 +1070,8 @@
                                                 const hIni = parseInt(match[2]) + parseInt(match[3]) / 60;
                                                 const hFin = parseInt(match[4]) + parseInt(match[5]) / 60;
 
-                                                const topPercent = ((hIni - H_START) / TOTAL_HOURS) * 100;
-                                                const heightPercent = ((hFin - hIni) / TOTAL_HOURS) * 100;
+                                                const topPercent = VERTICAL_PADDING_PERCENT + ((hIni - H_START) / TOTAL_HOURS) * USABLE_HEIGHT_PERCENT;
+                                                const heightPercent = ((hFin - hIni) / TOTAL_HOURS) * USABLE_HEIGHT_PERCENT;
 
                                                 const col = document.getElementById(`day-${dia}`);
                                                 if (col) {
@@ -1046,10 +1081,17 @@
                                                         block.style.height = `${heightPercent}%`;
                                                         block.style.backgroundColor = bgColor;
 
+                                                        const displayTime = formatHourRange(
+                                                                parseInt(match[2], 10),
+                                                                parseInt(match[3], 10),
+                                                                parseInt(match[4], 10),
+                                                                parseInt(match[5], 10)
+                                                        );
+
                                                         block.innerHTML = `
                             <span class="e-code">${sel.cursoId} (G.${sel.grupo})</span>
                             <span class="e-prof">${sel.profesor}</span>
-                            <span class="e-prof">${match[2]}:${match[3]}-${match[4]}:${match[5]}</span>
+                            <span class="e-prof">${displayTime}</span>
                             <span class="e-prof">${match[6] ? match[6] : ''}</span>
                         `;
                                                         col.appendChild(block);
