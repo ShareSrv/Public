@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -122,6 +123,21 @@
                         border-radius: 4px;
                         padding: 6px 8px;
                         font-size: 13px;
+                }
+
+                .sede-selector button {
+                        background-color: transparent;
+                        color: var(--text-main);
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        padding: 6px 8px;
+                        font-size: 12px;
+                        cursor: pointer;
+                }
+
+                .sede-selector button:hover {
+                        border-color: var(--accent);
+                        color: var(--accent);
                 }
 
                 .plan-section {
@@ -493,6 +509,7 @@
                                         <option value="SAN JOSE">SAN JOSE</option>
                                         <option value="ALAJUELA">ALAJUELA</option>
                                 </select>
+                                <button type="button" id="cupo-toggle">Cupos: Sí</button>
                         </div>
                         <div class="plan-section" id="plan-container"></div>
                 </div>
@@ -612,6 +629,7 @@
                 let selectedGroups = [];
                 let expandedCourses = new Set();
                 let sedeSeleccionada = 'CARTAGO';
+                let mostrarSoloConCupo = false;
 
                 const H_START = 7;
                 const H_END = 22;
@@ -635,6 +653,7 @@
                 document.addEventListener("DOMContentLoaded", () => {
                         drawRows();
                         setupSedeSelector();
+                        setupCupoToggle();
                         loadStorage();
                 });
 
@@ -676,6 +695,31 @@
                         const sede = normalizarTexto(sedeText);
                         if (!seleccionada || seleccionada === 'TODAS') return true;
                         return sede.includes(seleccionada);
+                }
+
+                function coincideConCupo(tieneCupo) {
+                        return mostrarSoloConCupo ? Boolean(tieneCupo) : true;
+                }
+
+                function obtenerCuposTexto(cupoText) {
+                        const texto = (cupoText || '').toString().trim();
+                        if (!texto) return '0 Cupos';
+                        const match = texto.match(/^(\d+)/);
+                        return match ? `${parseInt(match[1], 10)} Cupos` : `${texto} Cupos`;
+                }
+
+                function calcularCupoDisponible(cupoText) {
+                        const texto = (cupoText || '').toString().trim();
+                        if (!texto) return false;
+                        const numero = texto.match(/^(\d+)$/);
+                        if (numero) {
+                                return parseInt(numero[1], 10) > 0;
+                        }
+                        const fraccion = texto.match(/^(\d+)\s*\/\s*(\d+)$/);
+                        if (fraccion) {
+                                return parseInt(fraccion[1], 10) > 0;
+                        }
+                        return false;
                 }
 
                 function parsearBox(box, semestre, semestreLabel) {
@@ -811,6 +855,7 @@
                                                         const numGrupo = filaGrupo.querySelector('.colHoGrupo')?.textContent.trim() || '';
                                                         const profesor = filaGrupo.querySelector('.colHoProfesor')?.textContent.trim() || 'Sin Profesor';
                                                         const estado = filaGrupo.querySelector('.colHoEstado')?.textContent.trim() || '';
+                                                        const cupoText = filaGrupo.querySelector('.colHoCupo')?.textContent.trim() || '';
                                                         const horarioEl = filaGrupo.querySelector('.colHoHorario');
 
                                                         let horarios = [];
@@ -822,7 +867,7 @@
                                                         }
 
                                                         if (numGrupo) {
-                                                                grupos.push({ grupo: numGrupo, profesor, horarios, estado, sede });
+                                                                grupos.push({ grupo: numGrupo, profesor, horarios, estado, sede, cupoText, cupoDisponible: calcularCupoDisponible(cupoText) });
                                                         }
                                                 });
                                         }
@@ -847,16 +892,39 @@
                         selector.addEventListener('change', () => {
                                 sedeSeleccionada = selector.value;
                                 localStorage.setItem('tec_sede', sedeSeleccionada);
-                                sincronizarSeleccionPorSede();
+                                sincronizarSeleccionPorFiltros();
                                 saveData();
                         });
                 }
 
-                function sincronizarSeleccionPorSede() {
+                function setupCupoToggle() {
+                        const button = document.getElementById('cupo-toggle');
+                        if (!button) return;
+
+                        const savedCupo = localStorage.getItem('tec_cupo') || 'NO';
+                        mostrarSoloConCupo = savedCupo === 'SI';
+                        actualizarEtiquetaCupo();
+
+                        button.addEventListener('click', () => {
+                                mostrarSoloConCupo = !mostrarSoloConCupo;
+                                localStorage.setItem('tec_cupo', mostrarSoloConCupo ? 'SI' : 'NO');
+                                actualizarEtiquetaCupo();
+                                sincronizarSeleccionPorFiltros();
+                                saveData();
+                        });
+                }
+
+                function actualizarEtiquetaCupo() {
+                        const button = document.getElementById('cupo-toggle');
+                        if (!button) return;
+                        button.textContent = `Sólo cupos: ${mostrarSoloConCupo ? 'Sí' : 'No'}`;
+                }
+
+                function sincronizarSeleccionPorFiltros() {
                         const visibles = new Set();
                         ofertaData.forEach(curso => {
                                 (curso.grupos || []).forEach(grupo => {
-                                        if (coincideConSede(grupo.sede)) {
+                                        if (coincideConSede(grupo.sede) && coincideConCupo(grupo.cupoDisponible)) {
                                                 visibles.add(`${curso.id}:${grupo.grupo}`);
                                         }
                                 });
@@ -869,6 +937,7 @@
                         localStorage.setItem('tec_oferta', JSON.stringify(ofertaData));
                         localStorage.setItem('tec_selections', JSON.stringify(selectedGroups));
                         localStorage.setItem('tec_sede', sedeSeleccionada);
+                        localStorage.setItem('tec_cupo', mostrarSoloConCupo ? 'SI' : 'NO');
 
                         setColors();
                         renderPlan();
@@ -880,14 +949,17 @@
                         const o = localStorage.getItem('tec_oferta');
                         const s = localStorage.getItem('tec_selections');
                         const sedeGuardada = localStorage.getItem('tec_sede');
+                        const cupoGuardado = localStorage.getItem('tec_cupo');
 
                         if (p) planData = JSON.parse(p);
                         if (o) ofertaData = JSON.parse(o);
                         if (s) selectedGroups = JSON.parse(s);
                         if (sedeGuardada) sedeSeleccionada = sedeGuardada;
+                        if (cupoGuardado) mostrarSoloConCupo = cupoGuardado === 'SI';
 
                         const selector = document.getElementById('sede-selector');
                         if (selector) selector.value = sedeSeleccionada;
+                        actualizarEtiquetaCupo();
 
                         if (planData.length > 0 || ofertaData.length > 0) {
                                 saveData();
@@ -922,7 +994,7 @@
                                         creditos: '', horas: '', requisitos: [], corequisitos: [], es_requisito_de: [], es_corequisito_de: []
                                 };
 
-                                const gruposVisibles = (curso.grupos || []).filter(g => coincideConSede(g.sede));
+                                const gruposVisibles = (curso.grupos || []).filter(g => coincideConSede(g.sede) && coincideConCupo(g.cupoDisponible));
                                 if (gruposVisibles.length === 0) return;
 
                                 const box = document.createElement('div');
@@ -974,9 +1046,11 @@
                                                 return `${match[1]} ${formatHourRange(startHour, startMinute, endHour, endMinute)}`;
                                         });
 
+                                        const cuposLabel = obtenerCuposTexto(g.cupoText);
+
                                         gDiv.innerHTML = `
                     <div class="group-header">
-                        <div><b>Gr. ${g.grupo}</b> ${estadoBadge}</div>
+                        <div><b>Gr. ${g.grupo}</b> (${cuposLabel}) ${estadoBadge}</div>
                         <button style="padding: 2px 6px; font-size: 10px;">${isSelected ? '✕' : '+'}</button>
                     </div>
                     <div style="font-size:10px; color:var(--text-main); font-weight:bold; margin-bottom: 2px;">${g.profesor}</div>
