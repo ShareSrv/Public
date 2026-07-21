@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -259,6 +258,7 @@
                         overflow-y: auto;
                         display: flex;
                         flex-direction: column;
+                        position: relative;
                 }
 
                 .calendar {
@@ -326,6 +326,42 @@
                 .event-block:hover {
                         opacity: 1;
                         z-index: 10;
+                }
+
+                .event-block.conflict {
+                        border: 2px solid #f59e0b;
+                        box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.35);
+                }
+
+                .event-block .conflict-badge {
+                        font-size: 9px;
+                        font-weight: bold;
+                        color: #fde68a;
+                        margin-bottom: 2px;
+                        letter-spacing: 0.04em;
+                        text-transform: uppercase;
+                }
+
+                .schedule-alert {
+                        position: absolute;
+                        top: 15px;
+                        left: 15px;
+                        right: 15px;
+                        z-index: 20;
+                        padding: 8px 10px;
+                        border-radius: 4px;
+                        background-color: rgba(245, 158, 11, 0.2);
+                        color: #fde68a;
+                        border: 1px solid rgba(245, 158, 11, 0.4);
+                        font-size: 12px;
+                        line-height: 1.4;
+                        display: none;
+                        backdrop-filter: blur(2px);
+                        pointer-events: none;
+                }
+
+                .schedule-alert.visible {
+                        display: block;
                 }
 
                 .event-block .e-code {
@@ -514,6 +550,7 @@
                         <div class="plan-section" id="plan-container"></div>
                 </div>
                 <div class="schedule-section">
+                        <div id="schedule-alert" class="schedule-alert"></div>
                         <div class="calendar">
                                 <div class="time-labels" id="time-labels"></div>
                                 <div class="day-column" id="day-L">
@@ -970,7 +1007,21 @@
                         localStorage.clear();
                         planData = []; ofertaData = []; selectedGroups = [];
                         expandedCourses.clear();
-                        saveData();
+
+                        const planInput = document.getElementById('plan-file');
+                        const semestreInput = document.getElementById('semestre-file');
+                        if (planInput) planInput.value = '';
+                        if (semestreInput) semestreInput.value = '';
+
+                        const selector = document.getElementById('sede-selector');
+                        if (selector) selector.value = 'CARTAGO';
+                        sedeSeleccionada = 'CARTAGO';
+                        mostrarSoloConCupo = false;
+                        actualizarEtiquetaCupo();
+
+                        setTimeout(() => {
+                                window.location.reload();
+                        }, 0);
                 }
 
                 function setColors() {
@@ -1126,13 +1177,29 @@
                         }
                 }
 
+                function mostrarAlertaHorario(mensaje) {
+                        const alerta = document.getElementById('schedule-alert');
+                        if (!alerta) return;
+                        alerta.textContent = mensaje;
+                        alerta.classList.add('visible');
+                        clearTimeout(mostrarAlertaHorario.timeoutId);
+                        mostrarAlertaHorario.timeoutId = setTimeout(() => {
+                                alerta.classList.remove('visible');
+                                alerta.textContent = '';
+                        }, 4000);
+                }
+
                 function renderSchedule() {
                         const days = ['L', 'K', 'M', 'J', 'V', 'S'];
+                        let huboConflicto = false;
+                        const bloquesPorDia = {};
+
                         days.forEach(d => {
                                 const col = document.getElementById(`day-${d}`);
                                 Array.from(col.children).forEach(child => {
                                         if (!child.classList.contains('day-header')) child.remove();
                                 });
+                                bloquesPorDia[d] = [];
                         });
 
                         selectedGroups.forEach(sel => {
@@ -1150,8 +1217,22 @@
 
                                                 const col = document.getElementById(`day-${dia}`);
                                                 if (col) {
+                                                        const existingBlocks = bloquesPorDia[dia] || [];
+                                                        let isConflict = false;
+                                                        existingBlocks.forEach(existing => {
+                                                                if (hIni < existing.end && hFin > existing.start) {
+                                                                        isConflict = true;
+                                                                        existing.conflict = true;
+                                                                        huboConflicto = true;
+                                                                }
+                                                        });
+                                                        if (isConflict) {
+                                                                huboConflicto = true;
+                                                        }
+
                                                         const block = document.createElement('div');
                                                         block.className = 'event-block';
+                                                        if (isConflict) block.classList.add('conflict');
                                                         block.style.top = `${topPercent}%`;
                                                         block.style.height = `${heightPercent}%`;
                                                         block.style.backgroundColor = bgColor;
@@ -1163,17 +1244,24 @@
                                                                 parseInt(match[5], 10)
                                                         );
 
+                                                        const conflictBadge = isConflict ? '<span class="conflict-badge">⚠ Conflicto</span>' : '';
                                                         block.innerHTML = `
+                            ${conflictBadge}
                             <span class="e-code">${sel.cursoId} (G.${sel.grupo})</span>
                             <span class="e-prof">${sel.profesor}</span>
                             <span class="e-prof">${displayTime}</span>
                             <span class="e-prof">${match[6] ? match[6] : ''}</span>
                         `;
                                                         col.appendChild(block);
+                                                        bloquesPorDia[dia].push({ start: hIni, end: hFin, conflict: isConflict });
                                                 }
                                         }
                                 });
                         });
+
+                        if (huboConflicto) {
+                                mostrarAlertaHorario('Se detectó un conflicto de horario. Favor revisar el curso marcado.');
+                        }
                 }
 
                 function abrirTutorial() {
