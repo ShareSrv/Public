@@ -51,9 +51,20 @@
                         align-items: center;
                 }
 
+                .btn-section {
+                        display: flex;
+                        gap: 15px;
+                        align-items: center;
+                }
+
+                select,
                 input[type="file"] {
                         font-size: 12px;
-                        color: var(--text-muted);
+                        color: var(--text-main);
+                        background-color: var(--bg-color);
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        padding: 4px 8px;
                 }
 
                 button {
@@ -69,6 +80,11 @@
 
                 button.btn-danger {
                         background-color: var(--danger);
+                }
+
+                #btn-tutorial {
+                        background-color: #0bdef5;
+                        color: #000000;
                 }
 
                 h3 {
@@ -143,10 +159,12 @@
                         flex: 1;
                         background-color: var(--surface-color);
                         overflow-y: auto;
+                        overflow-x: hidden;
                         padding: 15px;
                         display: flex;
                         flex-direction: column;
                         gap: 10px;
+                        min-width: 0;
                 }
 
                 .course-box {
@@ -157,6 +175,7 @@
                         cursor: pointer;
                         transition: border-color 0.15s;
                         position: relative;
+                        min-width: 0;
                 }
 
                 .course-box:hover {
@@ -179,6 +198,47 @@
                         font-weight: bold;
                         margin: 4px 0;
                         line-height: 1.3;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: block;
+                }
+
+                .main-container {
+                        overflow-x: hidden;
+                }
+
+                .groups-container,
+                .course-box>div {
+                        min-width: 0;
+                }
+
+                .event-tag {
+                        font-size: 9px;
+                        padding: 1px 5px;
+                        border-radius: 2px;
+                        margin-left: 6px;
+                        display: inline-block;
+                        vertical-align: middle;
+                        line-height: 1;
+                        transform: none;
+                }
+
+                .event-tag.semi {
+                        background-color: rgba(234, 179, 8, 0.18);
+                        color: #eab308;
+                        border: 1px solid #eab308;
+                }
+
+                .event-tag.virt {
+                        background-color: rgba(6, 182, 212, 0.18);
+                        color: #06b6d4;
+                        border: 1px solid #06b6d4;
+                }
+
+                .event-tag.asis {
+                        background-color: rgba(34, 197, 94, 0.18);
+                        color: #22c55e;
+                        border: 1px solid #22c55e;
                 }
 
                 .course-box .details {
@@ -366,11 +426,19 @@
 
                 .event-block .e-code {
                         font-weight: bold;
-                        font-size: 14px;
+                        font-size: 11px;
+                        margin-bottom: 2px;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        white-space: normal;
+                        line-height: 1.1;
                 }
 
                 .event-block .e-prof {
-                        font-size: 12px;
+                        font-size: 10px;
+                        line-height: 1.1;
                         text-wrap: break-word;
                         white-space: wrap;
                         text-overflow: ellipsis;
@@ -512,6 +580,84 @@
                         border-color: var(--abre-color) !important;
                         background: #0a2e1a;
                 }
+
+                .prof-badge-container {
+                        position: relative;
+                        display: inline-block;
+                        margin-left: 6px;
+                }
+
+                .prof-badge {
+                        background-color: rgba(255, 193, 7, 0.15);
+                        color: #ffc107;
+                        border: 1px solid #ffc107;
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                        font-size: 0.9em;
+                        font-weight: bold;
+                        display: inline-block;
+                }
+
+                .prof-tooltip {
+                        visibility: hidden;
+                        width: 200px;
+                        background-color: #333;
+                        color: #fff;
+                        text-align: left;
+                        border-radius: 6px;
+                        padding: 10px;
+                        position: absolute;
+                        z-index: 1001;
+                        bottom: 130%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        opacity: 0;
+                        transition: opacity 0.3s;
+                        font-size: 12px;
+                        font-weight: normal;
+                        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+                        pointer-events: none;
+                }
+
+                .prof-tooltip::after {
+                        content: '';
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        width: 100%;
+                        height: 25px;
+                }
+
+                .prof-badge-container:hover .prof-tooltip {
+                        visibility: visible;
+                        opacity: 1;
+                        pointer-events: auto;
+                }
+
+                .prof-tooltip a {
+                        color: #66b3ff;
+                        text-decoration: none;
+                        display: inline-block;
+                        margin-top: 5px;
+                }
+
+                .prof-tooltip a:hover {
+                        text-decoration: underline;
+                }
+
+                .matricula-textarea {
+                        width: 100%;
+                        height: 150px;
+                        background: #111;
+                        color: #0f0;
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        padding: 10px;
+                        font-family: monospace;
+                        font-size: 12px;
+                        resize: none;
+                        margin-top: 10px;
+                }
         </style>
 </head>
 
@@ -521,16 +667,29 @@
                 <h3>Horarios TEC</h3>
                 <div class="upload-section">
                         <div>
-                                <label for="plan-file">Plan de Estudios:</label>
-                                <input type="file" id="plan-file" accept=".html">
+                                <label for="carrera-select">Carrera:</label>
+
+                                <select id="carrera-select">
+                                        <option value="" disabled selected>-- Seleccionar Carrera --</option>
+                                </select>
                         </div>
+
                         <div>
-                                <label for="semestre-file">Semestre:</label>
+                                <label id="semestre-label" for="semestre-file">Semestre:</label>
+
                                 <input type="file" id="semestre-file" accept=".html">
                         </div>
-                        <button onclick="abrirTutorial()">Tutorial</button>
-                        <button onclick="abrirPlanEstudios()">Plan de Estudios</button>
-                        <button class="btn-danger" onclick="clearData()">Limpiar Datos</button>
+                </div>
+
+                <div class="btn-section">
+                        <button id="btn-tutorial" onclick="abrirTutorial()">Tutorial</button>
+                        <button id="btn-plan" onclick="abrirPlanEstudios()" style="display: none;">Plan de
+                                Estudios</button>
+                        <button id="btn-wait" onclick=style="display: none;">Cargando...</button>
+                        <button id="btn-limpiar" class="btn-danger" onclick="clearData()" style="display: none;">Limpiar
+                                Datos</button>
+                        <button id="btn-matricular" onclick="abrirModalMatricular()"
+                                style="display: none; background-color: #28a745; color: white;">Matricular</button>
                 </div>
         </header>
 
@@ -581,57 +740,39 @@
                         <button onclick="cerrarTutorial()">Cerrar</button>
                 </div>
                 <div class="modal-content">
-                        <p>Para utilizar esta herramienta, primero debes cargar el plan de estudios y el semestre.</p>
+                        <p>Para utilizar esta herramienta, primero debes seleccionar la carrera y cargar el semestre.
+                        </p>
                         <p>Sólo se permiten las páginas del TEC a partir de estos métodos.</p>
                         <p>Es experimental así que puede romperse.</p>
                         <br>
                         <h3>Plan de Estudios</h3>
-
                         <br>
-
-                        <p>1. Busca tu plan de estudios la página del TEC (La página que contiene los bloques y cursos.
-                                Ej: <a
-                                        href="https://www.tec.ac.cr/licenciatura-ingenieria-computadores">https://www.tec.ac.cr/licenciatura-ingenieria-computadores</a>)
-                        </p>
-                        <p>2. Una vez en la página, haz click derecho en cualquier lado y selecciona "Guardar como..."
-                        </p>
-                        <p>3. Descarga el archivo como Página Web o .html</p>
-                        <p>(Como referencia, el nombre suele ser: "Licenciatura en Carrera _
-                                TEC.html")</p>
-                        <p>4. Carga el archivo en esta página en la sección de "Plan de Estudios" de arriba.</p>
-
+                        <p>1. Selecciona tu carrera arriba a la izquierda.</p>
+                        <p>2. Espera a que se descargue el plan de estudios.</p>
                         <br>
-
                         <h3>Semestre</h3>
                         <br>
                         <p>1. Ingresa al <a href="https://tec-appsext.itcr.ac.cr/matricula">Sistema de Matrícula</a>.
                         </p>
-                        <p>2. Selecciona el semestre a cursar.
-                        </p>
+                        <p>2. Selecciona el semestre a cursar.</p>
                         <p>3. Haz click o abre los cursos que deseas mostrar (El símbolo ">" a la izquierda debe ir
                                 hacia abajo).</p>
                         <p>4. Haz click derecho en cualquier lado y selecciona "Guardar como...".</p>
                         <p>5. Descarga el archivo como Página Web o .html</p>
                         <p>(Como referencia, el nombre suele ser: "Sistema de Matrícula del TEC.html")</p>
                         <p>6. Carga el archivo en esta página en la sección de "Semestre" de arriba.</p>
-
                         <br>
-
                         <h3>Cómo Usar</h3>
                         <p>&bullet; A la izquierda saldrán los cursos que seleccionaste en la sección del Semestre.</p>
-                        
                         <p>&bullet; También se puede filtrar por sede y cupos disponibles.</p>
-
                         <p>&bullet; Selecciona cualquier curso y luego selecciona un horario. Este se mostrará en el
                                 horario a la derecha.</p>
-
-                        <p>&bullet; Arriba a la derecha puedes abrir el Plan de Estudios.</p>
-
+                        <p>&bullet; Arriba a la derecha se encuentran diferentes botones una vez cargados los datos.</p>
                         <p>&bullet; En el Plan de Estudios puedes colocar el mouse sobre los cursos para ver sus
                                 requisitos y corequisitos.</p>
-
+                        <p>&bullet; En Matricular, puedes mostrar los cursos que seleccionaste en la página de
+                                matrícula.</p>
                         <p>&bullet; También puedes eliminar los datos en el botón rojo.</p>
-
                         <p>&bullet; El plan, semestre y cursos seleccionados se guardan aunque salgas de la página.</p>
                 </div>
         </div>
@@ -660,13 +801,135 @@
                 </div>
         </div>
 
+        <div id="modal-matricular" class="modal">
+                <div class="modal-header">
+                        <h3>Asistente de Matrícula (BETA)</h3>
+                        <button onclick="cerrarModalMatricular()">Cerrar</button>
+                </div>
+                <div class="modal-content">
+                        <p>Este script abrirá automáticamente las pestañas de los cursos que elegiste y resaltará en
+                                color amarillo los grupos correspondientes.</p>
+
+                        <br>
+                        <p>1. Ingresa primero a la página del <a href="https://tec-appsext.itcr.ac.cr/matricula">Sistema
+                                        de Matrícula</a> del TEC y selecciona el semestre.
+
+                        </p>
+                        <p>2. Abre la consola de desarrollador haciendo clic derecho y seleccionando
+                                <b>"Inspeccionar"</b>, luego ve a la pestaña <b>"Consola"</b> (también puedes
+                                usar la tecla F12).
+                        </p>
+
+                        <p><i>Nota: Si es la primera vez que pegas código, puede que el navegador te pida
+                                        escribir <b>"allow pasting"</b> y presionar Enter por seguridad.</i>
+                        </p>
+
+                        <p>3. Finalmente, copia el script de abajo, pégalo en la consola y presiona Enter.</p>
+                        <br>
+                        <p>Se mostrarán los cursos que hayas seleccionado y podrás matricularlos con mayor facilidad
+                                (El script no puede matricularlos automáticamente).</p>
+
+
+                        <textarea id="codigo-matricula" class="matricula-textarea" readonly></textarea>
+                        <br>
+                        <button id="btn-copiar-codigo" onclick="copiarCodigoMatricula()"
+                                style="margin-top: 15px; width: 100%;">Copiar Código</button>
+                </div>
+        </div>
+
         <script>
+                const PROXY_URL = "https://soft-base-e57d.ignacioapuy.workers.dev?url=";
+
+                const CARRERAS_DIC = [
+                        { nombre: "- Bachillerato -", url: "-" },
+
+                        { nombre: "Admin. de Empresas, Diurno", url: "https://www.tec.ac.cr/bachillerato-administracion-empresas-diurno" },
+
+                        { nombre: "Admin. de Empresas, Nocturno", url: "https://www.tec.ac.cr/bachillerato-administracion-empresas-nocturno" },
+
+                        { nombre: "Enseñanza de la Matemática", url: "https://www.tec.ac.cr/bachillerato-ensenanza-matematica-entornos-tecnologicos" },
+
+                        { nombre: "Gestión en Sostenibilidad Turística", url: "https://www.tec.ac.cr/bachillerato-gestion-sostenibilidad-turistica" },
+
+                        { nombre: "Gestión del Turismo Rural Sostenible", url: "https://www.tec.ac.cr/bachillerato-gestion-turismo-rural-sostenible" },
+
+                        { nombre: "Gestión del Turismo Sostenible", url: "https://www.tec.ac.cr/bachillerato-gestion-turismo-sostenible" },
+
+                        { nombre: "Ing. Biotecnología", url: "https://www.tec.ac.cr/bachillerato-ingenieria-biotecnologia" },
+
+                        { nombre: "Ing. Computación", url: "https://www.tec.ac.cr/plan-bachillerato-ingenieria-computacion" },
+
+                        { nombre: "Ing. Diseño Industrial", url: "https://www.tec.ac.cr/bachillerato-ingenieria-diseno-industrial" },
+
+                        { nombre: "Producción Industrial, Limón", url: "https://www.tec.ac.cr/bachillerato-produccion-industrial-limon" },
+
+                        { nombre: "- Licenciatura -", url: "-" },
+
+                        { nombre: "Admin. de Empresas (Contaduría, Semestral)", url: "https://www.tec.ac.cr/licenciatura-administracion-empresas-enfasis-contaduria-publica-semestral" },
+
+                        { nombre: "Admin. de Empresas (Contaduría, Bimestral)", url: "https://www.tec.ac.cr/licenciatura-administracion-empresas-enfasis-contaduria-publica-bimestral" },
+
+                        { nombre: "Admin. de Empresas (Financiera, Semestral)", url: "https://www.tec.ac.cr/licenciatura-administracion-empresas-enfasis-administracion-financiera-semestral" },
+
+                        { nombre: "Admin. de Empresas (Financiera, Bimestral)", url: "https://www.tec.ac.cr/licenciatura-administracion-empresas-enfasis-administracion-financiera-bimestral" },
+
+                        { nombre: "Admin. de Empresas (Mercadeo, Semestral)", url: "https://www.tec.ac.cr/licenciatura-administracion-empresas-enfasis-mercadeo-semestral" },
+
+                        { nombre: "Admin. de Empresas (Mercadeo, Bimestral)", url: "https://www.tec.ac.cr/licenciatura-administracion-empresas-enfasis-mercadeo-bimestral" },
+
+                        { nombre: "Admin. de Empresas (Recursos H., Bimestral)", url: "https://www.tec.ac.cr/licenciatura-administracion-empresas-enfasis-recursos-humanos-bimestral" },
+
+                        { nombre: "Admin. de Tecnologías de Información", url: "https://www.tec.ac.cr/licenciatura-administracion-tecnologias-informacion" },
+
+                        { nombre: "Educación Técnica", url: "https://www.tec.ac.cr/licenciatura-educacion-tecnica" },
+
+
+                        { nombre: "Enseñanza de la Matemática", url: "https://www.tec.ac.cr/licenciatura-ensenanza-matematica-entornos-tecnologicos" },
+
+                        { nombre: "Ing. Agrícola", url: "https://www.tec.ac.cr/licenciatura-ingenieria-agricola" },
+
+                        { nombre: "Ing. Agronegocios", url: "https://www.tec.ac.cr/plan-licenciatura-ingenieria-agronegocios" },
+
+                        { nombre: "Ing. Agronomía", url: "https://www.tec.ac.cr/licenciatura-ingenieria-agronomia" },
+
+                        { nombre: "Ing. Ambiental", url: "https://www.tec.ac.cr/licenciatura-ingenieria-ambiental" },
+
+                        { nombre: "Ing. Biotecnología", url: "https://www.tec.ac.cr/licenciatura-ingenieria-biotecnologia" },
+
+                        { nombre: "Ing. Computadores", url: "https://www.tec.ac.cr/licenciatura-ingenieria-computadores" },
+
+                        { nombre: "Ing. Construcción", url: "https://www.tec.ac.cr/licenciatura-ingenieria-construccion" },
+
+                        { nombre: "Ing. Diseño Industrial (Productos)", url: "https://www.tec.ac.cr/licenciatura-ingenieria-diseno-industrial-enfasis-desarrollo-productos" },
+
+                        { nombre: "Ing. Diseño Industrial (Visual)", url: "https://www.tec.ac.cr/licenciatura-ingenieria-diseno-industrial-enfasis-comunicacion-visual" },
+
+                        { nombre: "Ing. Electrónica", url: "https://www.tec.ac.cr/licenciatura-ingenieria-electronica-0" },
+
+                        { nombre: "Ing. Física", url: "https://www.tec.ac.cr/licenciatura-ingenieria-fisica" },
+
+                        { nombre: "Ing. Forestal (Conservación y Restauración)", url: "https://www.tec.ac.cr/licenciatura-ingenieria-forestal-enfasis-conservacion-restauracion-ecosistemas-forestales" },
+
+                        { nombre: "Ing. Forestal (Manejo y Producción)", url: "https://www.tec.ac.cr/licenciatura-ingenieria-forestal-enfasis-manejo-produccion-forestal" },
+
+                        { nombre: "Ing. Materiales", url: "https://www.tec.ac.cr/licenciatura-ingenieria-materiales" },
+
+                        { nombre: "Ing. Mecatrónica", url: "https://www.tec.ac.cr/plan-licenciatura-ingenieria-mecatronica" },
+
+                        { nombre: "Ing. Producción Industrial", url: "https://www.tec.ac.cr/licenciatura-ingenieria-produccion-industrial" },
+
+                        { nombre: "Ing. Seguridad Laboral e Higiene", url: "https://www.tec.ac.cr/licenciatura-ingenieria-seguridad-laboral-higiene-ambiental" },
+
+                        { nombre: "Mantenimiento Industrial", url: "https://www.tec.ac.cr/licenciatura-mantenimiento-industrial" },
+                ];
+
                 let planData = [];
                 let ofertaData = [];
                 let selectedGroups = [];
                 let expandedCourses = new Set();
                 let sedeSeleccionada = 'CARTAGO';
                 let mostrarSoloConCupo = false;
+                let misProfesoresData = [];
 
                 const H_START = 7;
                 const H_END = 22;
@@ -676,6 +939,144 @@
 
                 const colors = ['#1e3a8a', '#b91c1c', '#047857', '#b45309', '#6d28d9', '#be185d', '#0e7490', '#a16207', '#0f766e', '#4338ca'];
                 let colorMap = {};
+
+                function actualizarBotones() {
+                        const tieneDatos = ofertaData && ofertaData.length > 0;
+                        const planCargado = planData && planData.length > 0;
+
+                        document.getElementById('btn-tutorial').style.display = 'inline-block';
+
+                        document.getElementById('btn-limpiar').style.display = (tieneDatos || planCargado) ? 'inline-block' : 'none';
+                        document.getElementById('btn-matricular').style.display = tieneDatos ? 'inline-block' : 'none';
+                        document.getElementById('btn-plan').style.display = planCargado ? 'inline-block' : 'none';
+                        document.getElementById('btn-wait').style.display = planCargado ? 'none' : 'none';
+
+                        const fileInput = document.getElementById('semestre-file');
+                        const semestreLabel = document.getElementById('semestre-label');
+
+                        if (tieneDatos) {
+                                fileInput.style.display = 'none';
+                                semestreLabel.innerHTML = 'Semestre: <b style="color:var(--abre-color)">Listo</b> <a href="#" id="change-semestre" style="font-size:11px; color:var(--text-muted); text-decoration:underline; margin-left: 5px;">(Cambiar)</a>';
+                                document.getElementById('change-semestre').onclick = (e) => {
+                                        e.preventDefault();
+                                        fileInput.click();
+                                };
+                        } else {
+                                fileInput.style.display = 'block';
+                                semestreLabel.textContent = 'Semestre:';
+                        }
+                }
+
+                async function cargarMisProfesores() {
+                        try {
+                                const url = 'https://costarica.misprofesores.com/escuelas/ITCR-Instituto-Tecnologico-de-Costa-Rica_1135';
+                                const targetUrl = PROXY_URL ? `${PROXY_URL}${encodeURIComponent(url)}` : url;
+                                const response = await fetch(targetUrl);
+                                const html = await response.text();
+
+                                const match = html.match(/var dataSet = (\[.*?\]);/);
+                                if (match && match[1]) {
+                                        misProfesoresData = JSON.parse(match[1]);
+                                        renderPlan();
+                                }
+                        } catch (e) {
+                                console.warn("Fallo al obtener datos de MisProfesores. Se abortan las calificaciones.", e);
+                        }
+                }
+
+                function normalizar(texto) {
+                        if (!texto) return "";
+                        return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
+                }
+
+                function encontrarProfesor(nombreTec) {
+                        if (!misProfesoresData || misProfesoresData.length === 0) return null;
+                        const tecNorm = normalizar(nombreTec);
+                        if (!tecNorm || tecNorm === "SIN PROFESOR") return null;
+
+                        for (const prof of misProfesoresData) {
+                                if (!prof.n || !prof.a || !prof.c) continue;
+                                const primerNombre = normalizar(prof.n).split(/\s+/)[0];
+                                const primerApellido = normalizar(prof.a).split(/\s+/)[0];
+
+                                if (tecNorm.includes(primerNombre) && tecNorm.includes(primerApellido)) {
+                                        return prof;
+                                }
+                        }
+                        return null;
+                }
+
+                function abrirModalMatricular() {
+                        const modal = document.getElementById('modal-matricular');
+                        const inputCodigo = document.getElementById('codigo-matricula');
+
+                        if (selectedGroups.length === 0) {
+                                inputCodigo.value = "// No has seleccionado ningún grupo para matricular.";
+                        } else {
+                                const cursosData = selectedGroups.map(g => ({ id: g.cursoId, grupo: g.grupo }));
+                                const cursosJSON = JSON.stringify(cursosData);
+
+                                let scriptStr = `
+async function mostrarMatricula() {
+    console.log("Iniciando selección de cursos...");
+    const cursos = ${cursosJSON};
+    
+    for (const c of cursos) {
+        const cursoRow = document.getElementById(c.id);
+        if (cursoRow) {
+            const trH = document.getElementById('trH' + c.id);
+            const cerrado = !trH || trH.style.display === 'none' || trH.innerHTML.trim() === '';
+            
+            if (cerrado) {
+                const img = cursoRow.querySelector('.imgAccordion');
+                if (img) {
+                    img.click();
+                    await new Promise(r => setTimeout(r, 800)); 
+                }
+            }
+            
+            const trHActualizado = document.getElementById('trH' + c.id);
+            if (trHActualizado) {
+                const filas = trHActualizado.querySelectorAll('.tableHorarios tbody tr');
+                for (const fila of filas) {
+                    const colGrupo = fila.querySelector('.colHoGrupo');
+                    if (colGrupo && colGrupo.textContent.trim() === c.grupo) {
+                        fila.style.backgroundColor = '#fef08a'; 
+                        fila.style.color = '#000';
+                        fila.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            }
+        }
+    }
+    console.log("Todo listo. Ya puedes matricular.");
+}
+mostrarMatricula();`;
+                                inputCodigo.value = scriptStr;
+                        }
+
+                        modal.style.display = 'flex';
+                }
+
+                function cerrarModalMatricular() {
+                        document.getElementById('modal-matricular').style.display = 'none';
+                }
+
+                function copiarCodigoMatricula() {
+                        const inputCodigo = document.getElementById('codigo-matricula');
+                        inputCodigo.select();
+                        inputCodigo.setSelectionRange(0, 99999);
+
+                        try {
+                                navigator.clipboard.writeText(inputCodigo.value);
+                                const btn = document.getElementById('btn-copiar-codigo');
+                                const txtOriginal = btn.innerText;
+                                btn.innerText = "¡Código Copiado!";
+                                setTimeout(() => btn.innerText = txtOriginal, 2000);
+                        } catch (err) {
+                                console.error("Fallo al copiar", err);
+                        }
+                }
 
                 function formatHourLabel(hour, minute = 0) {
                         const period = hour >= 12 ? 'PM' : 'AM';
@@ -691,8 +1092,55 @@
                         drawRows();
                         setupSedeSelector();
                         setupCupoToggle();
+                        poblarSelectorCarreras();
                         loadStorage();
+                        cargarMisProfesores();
                 });
+
+                function poblarSelectorCarreras() {
+                        const select = document.getElementById('carrera-select');
+                        CARRERAS_DIC.forEach(c => {
+                                const opt = document.createElement('option');
+                                if (c.url != "-") {
+                                        opt.value = c.url;
+                                } else {
+                                        opt.disabled = true;
+                                }
+                                opt.textContent = c.nombre;
+                                select.appendChild(opt);
+                        });
+
+                        select.addEventListener('change', async (e) => {
+                                const url = e.target.value;
+                                if (!url) return;
+                                await cargarCarreraDesdeURL(url);
+                        });
+                }
+
+                async function cargarCarreraDesdeURL(url) {
+                        document.getElementById('btn-plan').style.display = "none";
+                        document.getElementById('btn-wait').style.display = "inline-block";
+                        const targetUrl = PROXY_URL ? `${PROXY_URL}${encodeURIComponent(url)}` : url;
+
+                        try {
+                                const response = await fetch(targetUrl, {
+                                        method: 'GET',
+                                        cache: 'no-store',
+                                        headers: {}
+                                });
+
+                                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+
+                                const data = await response.text();
+                                procesarHTMLPlan(data);
+                                localStorage.setItem('tec_carrera_seleccionada', url);
+
+                        } catch (err) {
+                                console.error("Error al cargar la carrera:", err);
+                                alert(`No se pudo obtener el plan de estudios: ${err.message}`);
+                                document.getElementById('btn-wait').style.display = "none";
+                        }
+                }
 
                 function capitalCase(str) {
                         if (!str) return '';
@@ -807,59 +1255,64 @@
                         }
                 }
 
-                document.getElementById('plan-file').addEventListener('change', function (e) {
-                        const file = e.target.files[0];
-                        if (!file) return;
-                        const reader = new FileReader();
-                        reader.onload = function (evt) {
-                                const doc = new DOMParser().parseFromString(evt.target.result, 'text/html');
+                function procesarHTMLPlan(htmlString) {
+                        const doc = new DOMParser().parseFromString(htmlString, 'text/html');
 
-                                const bloqueLabels = {};
-                                doc.querySelectorAll('.slider-nav .tabs:not(.slick-cloned)').forEach(tab => {
-                                        const idx = tab.getAttribute('data-slick-index');
-                                        if (idx !== null && !(idx in bloqueLabels)) {
-                                                bloqueLabels[idx] = tab.textContent.trim();
-                                        }
-                                });
+                        const bloqueLabels = {};
 
-                                const slides = Array.from(doc.querySelectorAll('.slider-single .slick-track > .slick-slide'))
-                                        .filter(s => !s.classList.contains('slick-cloned'));
-
-                                planData = [];
-
-                                if (slides.length > 0) {
-                                        slides.forEach(slide => {
-                                                const idx = slide.getAttribute('data-slick-index');
-                                                const semestre = idx !== null ? parseInt(idx, 10) : 0;
-                                                const label = bloqueLabels[idx] || `Bloque ${semestre}`;
-                                                slide.querySelectorAll(':scope > .box').forEach(box => {
-                                                        parsearBox(box, semestre, label);
-                                                });
-                                        });
-                                } else {
-                                        doc.querySelectorAll('.box').forEach(box => parsearBox(box, 0, 'Plan de Estudios'));
+                        const tabs = doc.querySelectorAll('.slider-nav .tabs');
+                        tabs.forEach((tab, index) => {
+                                const idx = tab.getAttribute('data-slick-index') ?? index;
+                                const texto = tab.textContent.trim();
+                                if (texto && !(idx in bloqueLabels)) {
+                                        bloqueLabels[idx] = texto;
                                 }
+                        });
 
-                                if (planData.length === 0) {
-                                        alert("Error: Archivo de plan inválido.");
-                                        return;
+                        planData = [];
+
+                        let slides = Array.from(doc.querySelectorAll('.slider-single .slick-track > .slick-slide'))
+                                .filter(s => !s.classList.contains('slick-cloned'));
+
+                        if (slides.length === 0) {
+                                const sliderSingle = doc.querySelector('.slider-single');
+                                if (sliderSingle) {
+                                        slides = Array.from(sliderSingle.children).filter(child => child.querySelector('.box'));
                                 }
+                        }
 
-                                planData.forEach(curso => {
-                                        curso.requisitos.forEach(req => {
-                                                let parent = planData.find(p => p.id === req);
-                                                if (parent) parent.es_requisito_de.push(curso.id);
-                                        });
-                                        curso.corequisitos.forEach(coreq => {
-                                                let parent = planData.find(p => p.id === coreq);
-                                                if (parent) parent.es_corequisito_de.push(curso.id);
+                        if (slides.length > 0) {
+                                slides.forEach((slide, idx) => {
+                                        const slickIdx = slide.getAttribute('data-slick-index');
+                                        const semestre = slickIdx !== null ? parseInt(slickIdx, 10) : idx;
+                                        const label = bloqueLabels[semestre] || `Bloque ${semestre + 1}`;
+
+                                        slide.querySelectorAll('.box').forEach(box => {
+                                                parsearBox(box, semestre, label);
                                         });
                                 });
+                        } else {
+                                doc.querySelectorAll('.box').forEach(box => parsearBox(box, 0, 'Plan de Estudios'));
+                        }
 
-                                saveData();
-                        };
-                        reader.readAsText(file);
-                });
+                        if (planData.length === 0) {
+                                alert("Error: No se pudieron extraer los cursos del HTML de la carrera.");
+                                return;
+                        }
+
+                        planData.forEach(curso => {
+                                curso.requisitos.forEach(req => {
+                                        let parent = planData.find(p => p.id === req);
+                                        if (parent) parent.es_requisito_de.push(curso.id);
+                                });
+                                curso.corequisitos.forEach(coreq => {
+                                        let parent = planData.find(p => p.id === coreq);
+                                        if (parent) parent.es_corequisito_de.push(curso.id);
+                                });
+                        });
+
+                        saveData();
+                }
 
                 document.getElementById('semestre-file').addEventListener('change', function (e) {
                         const file = e.target.files[0];
@@ -979,6 +1432,7 @@
                         setColors();
                         renderPlan();
                         renderSchedule();
+                        actualizarBotones();
                 }
 
                 function loadStorage() {
@@ -987,12 +1441,17 @@
                         const s = localStorage.getItem('tec_selections');
                         const sedeGuardada = localStorage.getItem('tec_sede');
                         const cupoGuardado = localStorage.getItem('tec_cupo');
+                        const carreraGuardada = localStorage.getItem('tec_carrera_seleccionada');
 
                         if (p) planData = JSON.parse(p);
                         if (o) ofertaData = JSON.parse(o);
                         if (s) selectedGroups = JSON.parse(s);
                         if (sedeGuardada) sedeSeleccionada = sedeGuardada;
                         if (cupoGuardado) mostrarSoloConCupo = cupoGuardado === 'SI';
+                        if (carreraGuardada) {
+                                const sel = document.getElementById('carrera-select');
+                                if (sel) sel.value = carreraGuardada;
+                        }
 
                         const selector = document.getElementById('sede-selector');
                         if (selector) selector.value = sedeSeleccionada;
@@ -1000,17 +1459,28 @@
 
                         if (planData.length > 0 || ofertaData.length > 0) {
                                 saveData();
+                        } else {
+                                actualizarBotones();
                         }
                 }
 
                 function clearData() {
-                        localStorage.clear();
+                        try {
+                                localStorage.removeItem('tec_plan');
+                                localStorage.removeItem('tec_oferta');
+                                localStorage.removeItem('tec_selections');
+                                localStorage.removeItem('tec_sede');
+                                localStorage.removeItem('tec_cupo');
+                                localStorage.removeItem('tec_carrera_seleccionada');
+                        } catch (e) {
+                                console.warn('Error clearing localStorage keys', e);
+                        }
                         planData = []; ofertaData = []; selectedGroups = [];
                         expandedCourses.clear();
 
-                        const planInput = document.getElementById('plan-file');
+                        const carreraSelect = document.getElementById('carrera-select');
                         const semestreInput = document.getElementById('semestre-file');
-                        if (planInput) planInput.value = '';
+                        if (carreraSelect) carreraSelect.value = '';
                         if (semestreInput) semestreInput.value = '';
 
                         const selector = document.getElementById('sede-selector');
@@ -1018,6 +1488,8 @@
                         sedeSeleccionada = 'CARTAGO';
                         mostrarSoloConCupo = false;
                         actualizarEtiquetaCupo();
+
+                        actualizarBotones();
 
                         setTimeout(() => {
                                 window.location.reload();
@@ -1099,12 +1571,31 @@
 
                                         const cuposLabel = obtenerCuposTexto(g.cupoText);
 
+                                        let profHTML = `<div style="font-size:10px; color:var(--text-main); font-weight:bold; margin-bottom: 2px; display:flex; align-items:center;">
+                                                <span>${g.profesor}</span>`;
+
+                                        const profData = encontrarProfesor(g.profesor);
+                                        if (profData) {
+                                                profHTML += `
+                                                <div class="prof-badge-container">
+                                                        <span class="prof-badge">⭐ ${parseFloat(profData.c).toFixed(1)}</span>
+                                                        <div class="prof-tooltip">
+                                                                <strong>${profData.n} ${profData.a}</strong><br>
+                                                                Escuela: ${profData.d}<br>
+                                                                Calificación: <strong>${parseFloat(profData.c).toFixed(1)}/10</strong><br>
+                                                                Votos: ${profData.m}<br>
+                                                                <a href="https://costarica.misprofesores.com/profesores/${profData.n.replace(/\s/g, '-')}-${profData.a.replace(/\s/g, '-')}_${profData.i}" target="_blank">Ver en MisProfesores</a>
+                                                        </div>
+                                                </div>`;
+                                        }
+                                        profHTML += `</div>`;
+
                                         gDiv.innerHTML = `
                     <div class="group-header">
-                        <div><b>Gr. ${g.grupo}</b> (${cuposLabel}) ${estadoBadge}</div>
+                        <div><b>Grupo ${g.grupo}</b> (${cuposLabel}) ${estadoBadge}</div>
                         <button style="padding: 2px 6px; font-size: 10px;">${isSelected ? '✕' : '+'}</button>
                     </div>
-                    <div style="font-size:10px; color:var(--text-main); font-weight:bold; margin-bottom: 2px;">${g.profesor}</div>
+                    ${profHTML}
                     <div style="font-size:10px; color:var(--text-muted);">${formatHours.join('<br>')}</div>
                 `;
 
@@ -1245,13 +1736,24 @@
                                                         );
 
                                                         const conflictBadge = isConflict ? '<span class="conflict-badge">⚠ Conflicto</span>' : '';
+
+                                                        const cursoOf = ofertaData.find(c => c.id === sel.cursoId) || null;
+                                                        const grupoInfo = cursoOf?.grupos?.find(g => String(g.grupo) === String(sel.grupo));
+                                                        let tagsHTML = '';
+                                                        if (grupoInfo) {
+                                                                const estadoLower = (grupoInfo.estado || '').toLowerCase();
+                                                                if (estadoLower.includes('semipresencial')) tagsHTML += '<span class="event-tag semi">Semi</span>';
+                                                                if (estadoLower.includes('virtual')) tagsHTML += '<span class="event-tag virt">Virt</span>';
+                                                                if (estadoLower.includes('asist') || estadoLower.includes('asis') || estadoLower.includes('asistid')) tagsHTML += '<span class="event-tag asis">Asis</span>';
+                                                        }
+
                                                         block.innerHTML = `
-                            ${conflictBadge}
-                            <span class="e-code">${sel.cursoId} (G.${sel.grupo})</span>
-                            <span class="e-prof">${sel.profesor}</span>
-                            <span class="e-prof">${displayTime}</span>
-                            <span class="e-prof">${match[6] ? match[6] : ''}</span>
-                        `;
+                                                        ${conflictBadge}
+                                                        <span class="e-code">${sel.nombre}</span>
+                                                        <span class="e-prof">${sel.profesor} (G.${sel.grupo})</span>
+                                                        <span class="e-prof">${displayTime}</span>
+                                                        <span class="e-prof">${match[6] ? match[6] : ''}${tagsHTML}</span>
+                                                `;
                                                         col.appendChild(block);
                                                         bloquesPorDia[dia].push({ start: hIni, end: hFin, conflict: isConflict });
                                                 }
@@ -1274,7 +1776,7 @@
 
                 function abrirPlanEstudios() {
                         if (planData.length === 0) {
-                                alert('Primero carga un archivo de Plan de Estudios.');
+                                alert('Primero selecciona una Carrera.');
                                 return;
                         }
                         document.getElementById('modal-plan').style.display = 'flex';
