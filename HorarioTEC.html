@@ -838,6 +838,8 @@
         </div>
 
         <script>
+                const APP_VERSION = 'v1.0';
+                const VERSION_STORAGE_KEY = 'tec_version';
                 const PROXY_URL = "https://soft-base-e57d.ignacioapuy.workers.dev?url=";
 
                 const CARRERAS_DIC = [
@@ -989,6 +991,28 @@
                         return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
                 }
 
+                function versionToNumber(version) {
+                        if (!version || typeof version !== 'string') return 0;
+                        const normalized = version.replace(/^v/i, '').trim();
+                        const parts = normalized.split('.').map(n => parseInt(n, 10) || 0);
+                        return parts[0] * 100 + (parts[1] || 0);
+                }
+
+                function checkAppVersion() {
+                        try {
+                                const storedVersion = localStorage.getItem(VERSION_STORAGE_KEY);
+                                const currentNumber = versionToNumber(APP_VERSION);
+                                const storedNumber = versionToNumber(storedVersion);
+
+                                if (!storedVersion || storedNumber < currentNumber) {
+                                        alert(`Se han hecho cambios importantes, favor limpiar datos antes de continuar.\nVersión ${APP_VERSION}`);
+                                        localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
+                                }
+                        } catch (e) {
+                                console.warn('No se pudo verificar la versión de la aplicación.', e);
+                        }
+                }
+
                 function encontrarProfesor(nombreTec) {
                         if (!misProfesoresData || misProfesoresData.length === 0) return null;
                         const tecNorm = normalizar(nombreTec);
@@ -1089,6 +1113,7 @@ mostrarMatricula();`;
                 }
 
                 document.addEventListener("DOMContentLoaded", () => {
+                        checkAppVersion();
                         drawRows();
                         setupSedeSelector();
                         setupCupoToggle();
