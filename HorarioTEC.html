@@ -193,7 +193,14 @@
                         white-space: nowrap;
                 }
 
-                .course-box .name {
+                .course-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        gap: 8px;
+                }
+
+                .course-title {
                         font-size: 13px;
                         font-weight: bold;
                         margin: 4px 0;
@@ -201,6 +208,50 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         display: block;
+                        flex: 1;
+                }
+
+                .course-meta {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        flex-shrink: 0;
+                        margin-left: auto;
+                }
+
+                .course-color-controls {
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                }
+
+                .color-picker-toggle {
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        background-color: var(--surface-hover);
+                        color: var(--text-main);
+                        padding: 2px 6px;
+                        font-size: 10px;
+                        cursor: pointer;
+                        line-height: 1;
+                }
+
+                .color-picker-toggle:hover {
+                        border-color: var(--accent);
+                }
+
+                .course-color-picker {
+                        width: 24px;
+                        height: 24px;
+                        padding: 0;
+                        border: 1px solid var(--border);
+                        border-radius: 4px;
+                        background: none;
+                        cursor: pointer;
+                }
+
+                .course-color-picker.hidden {
+                        display: none;
                 }
 
                 .main-container {
@@ -221,22 +272,28 @@
                         vertical-align: middle;
                         line-height: 1;
                         transform: none;
+                        border: 1px solid currentColor;
+                        background-color: rgba(255, 255, 255, 0.18);
+                        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+                        font-weight: 700;
+                        letter-spacing: 0.02em;
+                        backdrop-filter: blur(2px);
                 }
 
                 .event-tag.semi {
-                        background-color: rgba(234, 179, 8, 0.18);
+                        background-color: rgba(104, 79, 4, 0.919);
                         color: #eab308;
                         border: 1px solid #eab308;
                 }
 
                 .event-tag.virt {
-                        background-color: rgba(6, 182, 212, 0.18);
+                        background-color: rgba(4, 71, 83, 0.862);
                         color: #06b6d4;
                         border: 1px solid #06b6d4;
                 }
 
                 .event-tag.asis {
-                        background-color: rgba(34, 197, 94, 0.18);
+                        background-color: rgba(13, 85, 39, 0.851);
                         color: #22c55e;
                         border: 1px solid #22c55e;
                 }
@@ -254,6 +311,12 @@
                         border-radius: 2px;
                         margin-left: 2px;
                         display: inline-block;
+                        border: 1px solid currentColor;
+                        background-color: rgba(255, 255, 255, 0.16);
+                        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+                        font-weight: 700;
+                        letter-spacing: 0.02em;
+                        backdrop-filter: blur(2px);
                 }
 
                 .badge.semi {
@@ -351,7 +414,9 @@
                         flex: 1;
                         border-right: 1px solid var(--border);
                         position: relative;
-                        background-size: 100% calc(100% / 15);
+                        padding-top: 34px;
+                        background-size: 100% calc((100% - 34px) / 15);
+                        background-position: 0 34px;
                         background-image: linear-gradient(to bottom, var(--border) 1px, transparent 1px);
                 }
 
@@ -360,6 +425,10 @@
                 }
 
                 .day-header {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
                         text-align: center;
                         padding: 8px 0;
                         background-color: var(--surface-hover);
@@ -373,7 +442,7 @@
                         left: 2px;
                         right: 2px;
                         border-radius: 3px;
-                        padding: 4px;
+                        padding: 5px;
                         font-size: 10px;
                         color: white;
                         overflow: hidden;
@@ -381,6 +450,41 @@
                         transition: opacity 0.1s;
                         display: flex;
                         flex-direction: column;
+                        cursor: pointer;
+                        min-width: 70px;
+                }
+
+                .event-block-header {
+                        display: block;
+                        position: relative;
+                        padding-right: 42px;
+                }
+
+                .event-block-badges {
+                        position: absolute;
+                        top: 0px;
+                        right: 0px;
+                        display: flex;
+                        gap: 0px;
+                        align-items: flex-start;
+                        justify-content: flex-end;
+                        max-width: calc(100% - 46px);
+                        flex-wrap: wrap;
+                }
+
+                .event-block .e-code {
+                        display: block;
+                        font-weight: bold;
+                        font-size: 10.5px;
+                        line-height: 1.2;
+                        margin: 0;
+                        max-height: 3.6em;
+                        overflow: hidden;
+                        word-break: break-word;
+                }
+
+                .event-block .event-tag {
+                        margin-left: 0;
                 }
 
                 .event-block:hover {
@@ -427,20 +531,21 @@
                 .event-block .e-code {
                         font-weight: bold;
                         font-size: 11px;
-                        margin-bottom: 2px;
                         display: -webkit-box;
+                        line-clamp: 2;
                         -webkit-line-clamp: 2;
                         -webkit-box-orient: vertical;
                         overflow: hidden;
                         white-space: normal;
-                        line-height: 1.1;
+                        line-height: 1.0;
                 }
 
                 .event-block .e-prof {
+                        display: block;
                         font-size: 10px;
-                        line-height: 1.1;
-                        text-wrap: break-word;
-                        white-space: wrap;
+                        line-height: 1.2;
+                        word-break: break-word;
+                        white-space: normal;
                         text-overflow: ellipsis;
                         overflow: hidden;
                 }
@@ -734,6 +839,8 @@
                 </div>
         </div>
 
+        <input id="block-color-picker" type="color" class="course-color-picker hidden" style="position:absolute;left:-9999px;top:-9999px;">
+
         <div id="modal-tutorial" class="modal">
                 <div class="modal-header">
                         <h3>Tutorial</h3>
@@ -939,8 +1046,47 @@
                 const VERTICAL_PADDING_PERCENT = 2;
                 const USABLE_HEIGHT_PERCENT = 100 - (VERTICAL_PADDING_PERCENT * 2);
 
+                const DAY_NAMES = {
+                        L: 'Lun',
+                        K: 'Mar',
+                        M: 'Mié',
+                        J: 'Jue',
+                        V: 'Vie',
+                        S: 'Sáb'
+                };
+
                 const colors = ['#1e3a8a', '#b91c1c', '#047857', '#b45309', '#6d28d9', '#be185d', '#0e7490', '#a16207', '#0f766e', '#4338ca'];
+                const COURSE_COLORS_STORAGE_KEY = 'tec_course_colors';
                 let colorMap = {};
+
+                function normalizeHexColor(color) {
+                        if (!color || typeof color !== 'string') return null;
+                        const trimmed = color.trim();
+                        if (!trimmed) return null;
+                        if (trimmed.startsWith('#')) {
+                                const normalized = trimmed.length === 4
+                                        ? `#${trimmed.slice(1).split('').map(ch => ch + ch).join('')}`
+                                        : trimmed;
+                                return /^#[0-9a-f]{6}$/i.test(normalized) ? normalized : null;
+                        }
+                        return null;
+                }
+
+                function getContrastTextColor(backgroundColor) {
+                        const normalized = normalizeHexColor(backgroundColor);
+                        if (!normalized) return '#ffffff';
+
+                        const hex = normalized.slice(1);
+                        const r = parseInt(hex.slice(0, 2), 16);
+                        const g = parseInt(hex.slice(2, 4), 16);
+                        const b = parseInt(hex.slice(4, 6), 16);
+                        const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+                        return luminance > 0.6 ? '#111111' : '#ffffff';
+                }
+
+                function getCourseColor(cursoId) {
+                        return colorMap[cursoId] || '#555555';
+                }
 
                 function actualizarBotones() {
                         const tieneDatos = ofertaData && ofertaData.length > 0;
@@ -1453,6 +1599,7 @@ mostrarMatricula();`;
                         localStorage.setItem('tec_selections', JSON.stringify(selectedGroups));
                         localStorage.setItem('tec_sede', sedeSeleccionada);
                         localStorage.setItem('tec_cupo', mostrarSoloConCupo ? 'SI' : 'NO');
+                        localStorage.setItem(COURSE_COLORS_STORAGE_KEY, JSON.stringify(colorMap));
 
                         setColors();
                         renderPlan();
@@ -1467,6 +1614,20 @@ mostrarMatricula();`;
                         const sedeGuardada = localStorage.getItem('tec_sede');
                         const cupoGuardado = localStorage.getItem('tec_cupo');
                         const carreraGuardada = localStorage.getItem('tec_carrera_seleccionada');
+                        const coloresGuardados = localStorage.getItem(COURSE_COLORS_STORAGE_KEY);
+
+                        colorMap = {};
+                        if (coloresGuardados) {
+                                try {
+                                        const parsedColors = JSON.parse(coloresGuardados);
+                                        Object.entries(parsedColors).forEach(([cursoId, color]) => {
+                                                const normalizedColor = normalizeHexColor(color);
+                                                if (normalizedColor) colorMap[cursoId] = normalizedColor;
+                                        });
+                                } catch (e) {
+                                        console.warn('No se pudieron cargar los colores guardados.', e);
+                                }
+                        }
 
                         if (p) planData = JSON.parse(p);
                         if (o) ofertaData = JSON.parse(o);
@@ -1481,6 +1642,28 @@ mostrarMatricula();`;
                         const selector = document.getElementById('sede-selector');
                         if (selector) selector.value = sedeSeleccionada;
                         actualizarEtiquetaCupo();
+
+                        const colorPickerInput = document.getElementById('block-color-picker');
+                        if (colorPickerInput) {
+                                const hidePicker = () => {
+                                        colorPickerInput.classList.add('hidden');
+                                        colorPickerInput.style.display = 'none';
+                                        colorPickerInput.style.left = '-9999px';
+                                        colorPickerInput.style.top = '-9999px';
+                                };
+
+                                colorPickerInput.addEventListener('change', (e) => {
+                                        const cursoId = e.target.dataset.cursoId;
+                                        if (cursoId) {
+                                                cambiarColorCurso(cursoId, e.target.value);
+                                        }
+                                        hidePicker();
+                                });
+
+                                colorPickerInput.addEventListener('blur', () => {
+                                        hidePicker();
+                                });
+                        }
 
                         if (planData.length > 0 || ofertaData.length > 0) {
                                 saveData();
@@ -1497,11 +1680,13 @@ mostrarMatricula();`;
                                 localStorage.removeItem('tec_sede');
                                 localStorage.removeItem('tec_cupo');
                                 localStorage.removeItem('tec_carrera_seleccionada');
+                                localStorage.removeItem(COURSE_COLORS_STORAGE_KEY);
                         } catch (e) {
                                 console.warn('Error clearing localStorage keys', e);
                         }
                         planData = []; ofertaData = []; selectedGroups = [];
                         expandedCourses.clear();
+                        colorMap = {};
 
                         const carreraSelect = document.getElementById('carrera-select');
                         const semestreInput = document.getElementById('semestre-file');
@@ -1522,13 +1707,26 @@ mostrarMatricula();`;
                 }
 
                 function setColors() {
+                        const savedColors = JSON.parse(localStorage.getItem(COURSE_COLORS_STORAGE_KEY) || '{}');
                         let colorIdx = 0;
                         ofertaData.forEach(curso => {
-                                if (!colorMap[curso.id]) {
+                                const savedColor = normalizeHexColor(savedColors[curso.id]);
+                                if (savedColor) {
+                                        colorMap[curso.id] = savedColor;
+                                } else if (!colorMap[curso.id]) {
                                         colorMap[curso.id] = colors[colorIdx % colors.length];
                                         colorIdx++;
                                 }
                         });
+                }
+
+                function cambiarColorCurso(cursoId, nuevoColor) {
+                        const normalizedColor = normalizeHexColor(nuevoColor);
+                        if (!normalizedColor) return;
+
+                        colorMap[cursoId] = normalizedColor;
+                        localStorage.setItem(COURSE_COLORS_STORAGE_KEY, JSON.stringify(colorMap));
+                        saveData();
                 }
 
                 function renderPlan() {
@@ -1556,13 +1754,23 @@ mostrarMatricula();`;
                                 if (datosPlan.es_requisito_de.length) detailsHTML += `<b>Abre:</b> ${datosPlan.es_requisito_de.join(', ')}<br>`;
                                 if (datosPlan.es_corequisito_de.length) detailsHTML += `<b>Co-req de:</b> ${datosPlan.es_corequisito_de.join(', ')}`;
 
+                                const courseColor = getCourseColor(curso.id);
+                                const courseTextColor = getContrastTextColor(courseColor);
+
                                 box.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
-                    <div class="name">${curso.nombre} <span class="code" style="color: ${colorMap[curso.id]}">(${curso.id})</span></div>
-                    <div style="font-size: 11px; color: var(--text-muted); white-space: nowrap;">
-                        ${datosPlan.creditos ? `Cr: ${datosPlan.creditos}` : ''} 
-                        ${datosPlan.horas ? `| Hr: ${datosPlan.horas}` : ''}
+                <div class="course-header">
+                    <div class="course-title">${curso.nombre}</div>
+                    <div class="course-meta">
+                        <span class="code" style="color: ${courseColor}">(${curso.id})</span>
+                        <div class="course-color-controls">
+                            <button type="button" class="color-picker-toggle" data-course-id="${curso.id}" style="background-color: ${courseColor}; color: ${courseTextColor};" title="Cambiar color del curso" aria-label="Cambiar color del curso ${curso.id}">🎨</button>
+                            <input type="color" class="course-color-picker hidden" data-course-id="${curso.id}" value="${courseColor}">
+                        </div>
                     </div>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; margin-top: 6px;">
+                    ${datosPlan.creditos ? `Créditos: ${datosPlan.creditos}` : ''} 
+                    ${datosPlan.horas ? `| Horas: ${datosPlan.horas}` : ''}
                 </div>
                 <div class="details">${detailsHTML}</div>
             `;
@@ -1591,7 +1799,9 @@ mostrarMatricula();`;
                                                 const startMinute = parseInt(match[3], 10);
                                                 const endHour = parseInt(match[4], 10);
                                                 const endMinute = parseInt(match[5], 10);
-                                                return `${match[1]} ${formatHourRange(startHour, startMinute, endHour, endMinute)}`;
+                                                const dayLabel = DAY_NAMES[match[1]] || match[1];
+                                                const timeLabel = `${dayLabel} ${formatHourRange(startHour, startMinute, endHour, endMinute)}`;
+                                                return match[6] ? `${timeLabel} | ${match[6]}` : timeLabel;
                                         });
 
                                         const cuposLabel = obtenerCuposTexto(g.cupoText);
@@ -1633,6 +1843,24 @@ mostrarMatricula();`;
                                 });
 
                                 box.appendChild(groupCont);
+
+                                const colorToggle = box.querySelector('.color-picker-toggle');
+                                const colorPicker = box.querySelector('.course-color-picker');
+                                if (colorToggle && colorPicker) {
+                                        colorToggle.addEventListener('click', (e) => {
+                                                e.stopPropagation();
+                                                colorPicker.click();
+                                        });
+
+                                        colorPicker.addEventListener('click', (e) => {
+                                                e.stopPropagation();
+                                        });
+
+                                        colorPicker.addEventListener('change', (e) => {
+                                                e.stopPropagation();
+                                                cambiarColorCurso(curso.id, e.target.value);
+                                        });
+                                }
 
                                 box.addEventListener('click', () => {
                                         box.classList.toggle('expanded');
@@ -1682,14 +1910,24 @@ mostrarMatricula();`;
 
                 function drawRows() {
                         const tl = document.getElementById('time-labels');
+                        const calendar = document.querySelector('.calendar');
+                        const header = document.querySelector('.day-column .day-header');
+                        const headerHeight = header ? header.getBoundingClientRect().height : 0;
+                        const calendarHeight = calendar ? calendar.getBoundingClientRect().height : 0;
+                        const usableHeight = Math.max(calendarHeight - headerHeight, 1);
                         tl.innerHTML = '';
                         for (let h = H_START; h <= H_END; h++) {
-                                const percent = VERTICAL_PADDING_PERCENT + ((h - H_START) / TOTAL_HOURS) * USABLE_HEIGHT_PERCENT;
+                                const topPx = headerHeight + ((h - H_START) / TOTAL_HOURS) * usableHeight;
                                 const lbl = document.createElement('div');
                                 lbl.className = 'time-label';
-                                lbl.style.top = `${percent}%`;
                                 lbl.textContent = formatHourLabel(h);
                                 tl.appendChild(lbl);
+                                const labelHeight = lbl.getBoundingClientRect().height;
+                                const adjustedTop = h === H_END
+                                        ? Math.min(topPx, headerHeight + usableHeight - labelHeight / 2)
+                                        : topPx;
+                                lbl.style.top = `${adjustedTop}px`;
+                                if (h === H_END) lbl.style.display = 'none';
                         }
                 }
 
@@ -1719,7 +1957,8 @@ mostrarMatricula();`;
                         });
 
                         selectedGroups.forEach(sel => {
-                                const bgColor = colorMap[sel.cursoId] || '#555';
+                                const bgColor = getCourseColor(sel.cursoId);
+                                const textColor = getContrastTextColor(bgColor);
 
                                 sel.horarios.forEach(hStr => {
                                         const match = hStr.match(/^([LKMJVS])\s+(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})(?:\s*\((.*?)\))?/);
@@ -1746,12 +1985,20 @@ mostrarMatricula();`;
                                                                 huboConflicto = true;
                                                         }
 
+                                                        const header = col.querySelector('.day-header');
+                                                        const headerHeight = header ? header.getBoundingClientRect().height : 0;
+                                                        const colRect = col.getBoundingClientRect();
+                                                        const contentHeight = Math.max(colRect.height - headerHeight, 1);
+                                                        const topPx = ((hIni - H_START) / TOTAL_HOURS) * contentHeight;
+                                                        const heightPx = ((hFin - hIni) / TOTAL_HOURS) * contentHeight;
+
                                                         const block = document.createElement('div');
                                                         block.className = 'event-block';
                                                         if (isConflict) block.classList.add('conflict');
-                                                        block.style.top = `${topPercent}%`;
-                                                        block.style.height = `${heightPercent}%`;
+                                                        block.style.top = `${headerHeight + topPx}px`;
+                                                        block.style.height = `${Math.max(heightPx, 20)}px`;
                                                         block.style.backgroundColor = bgColor;
+                                                        block.style.color = textColor;
 
                                                         const displayTime = formatHourRange(
                                                                 parseInt(match[2], 10),
@@ -1774,11 +2021,18 @@ mostrarMatricula();`;
 
                                                         block.innerHTML = `
                                                         ${conflictBadge}
-                                                        <span class="e-code">${sel.nombre}</span>
-                                                        <span class="e-prof">${sel.profesor} (G.${sel.grupo})</span>
-                                                        <span class="e-prof">${displayTime}</span>
-                                                        <span class="e-prof">${match[6] ? match[6] : ''}${tagsHTML}</span>
+                                                        <div class="event-block-header">
+                                                            <span class="e-code">${sel.nombre}</span>
+                                                            <div class="event-block-badges">${tagsHTML}</div>
+                                                        </div>
+                                                        <span class="e-prof">${sel.profesor}</span>
+                                                        <span class="e-prof">${displayTime} | ${match[6] ? match[6] : ''}</span>
                                                 `;
+
+                                                        block.addEventListener('click', (e) => {
+                                                                e.stopPropagation();
+                                                                openColorPickerForCourse(sel.cursoId, block);
+                                                        });
                                                         col.appendChild(block);
                                                         bloquesPorDia[dia].push({ start: hIni, end: hFin, conflict: isConflict });
                                                 }
@@ -1813,6 +2067,31 @@ mostrarMatricula();`;
                         document.getElementById('plan-lines').innerHTML = '';
                 }
 
+                function openColorPickerForCourse(cursoId, block) {
+                        const picker = document.getElementById('block-color-picker');
+                        if (!picker) return;
+                        const color = getCourseColor(cursoId);
+                        picker.value = color;
+                        picker.dataset.cursoId = cursoId;
+
+                        if (block && block.getBoundingClientRect) {
+                                const rect = block.getBoundingClientRect();
+                                picker.classList.remove('hidden');
+                                picker.style.position = 'absolute';
+                                picker.style.display = 'block';
+                                picker.style.pointerEvents = 'auto';
+                                picker.style.opacity = '0';
+                                picker.style.zIndex = '10000';
+                                picker.style.width = '34px';
+                                picker.style.height = '34px';
+                                picker.style.left = `${window.scrollX + rect.right - 34}px`;
+                                picker.style.top = `${window.scrollY + rect.top + 4}px`;
+                        }
+
+                        picker.focus({ preventScroll: true });
+                        picker.click();
+                }
+
                 function renderizarPlanEstudios() {
                         const grid = document.getElementById('plan-grid');
                         const svg = document.getElementById('plan-lines');
@@ -1839,12 +2118,13 @@ mostrarMatricula();`;
                                         box.className = 'modal-course-box';
                                         box.id = `modal-course-${curso.id}`;
 
-                                        const bgColor = colorMap[curso.id] || '#555';
+                                        const bgColor = getCourseColor(curso.id);
+                                        const textColor = getContrastTextColor(bgColor);
                                         box.style.borderLeft = `4px solid ${bgColor}`;
 
                                         box.innerHTML = `
                     <div class="name">${curso.nombre}</div>
-                    <div class="code" style="color: ${bgColor}">(${curso.id})</div>
+                    <div class="code" style="color: ${textColor}">(${curso.id})</div>
                 `;
 
                                         box.addEventListener('mouseenter', () => mostrarConexiones(curso));
