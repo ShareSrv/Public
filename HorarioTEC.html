@@ -4,7 +4,7 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Horarios TEC</title>
+        <title>Horario TEC</title>
         <style>
                 :root {
                         --bg-color: #121212;
@@ -18,6 +18,8 @@
                         --req-color: #d97706;
                         --coreq-color: #0ea5e9;
                         --abre-color: #22c55e;
+                        --link-color: #3bdaf6;
+                        --link-hover: #990ee9;
                 }
 
                 * {
@@ -165,6 +167,53 @@
                         flex-direction: column;
                         gap: 10px;
                         min-width: 0;
+                }
+
+                .plan-credit {
+                        flex-shrink: 0;
+                        padding: 15px 15px 15px;
+                        border-top: 1px solid var(--border);
+                        background-color: var(--surface-color);
+                        color: var(--text-muted);
+                        font-size: 14px;
+                        text-align: center;
+                }
+
+                .plan-credit a {
+                        color: var(--link-color);
+                        text-decoration: none;
+                }
+
+                .plan-credit a:hover,
+                .plan-credit a:focus-visible {
+                        color: var(--link-hover);
+                        text-decoration: underline;
+                }
+
+                @media (max-width: 700px) {
+                        body {
+                                min-width: 1080px;
+                                overflow-x: auto;
+                        }
+
+                        header,
+                        .main-container {
+                                min-width: 1080px;
+                        }
+
+                        header {
+                                padding-left: 14px;
+                                padding-right: 14px;
+                        }
+
+                        .left-panel {
+                                width: 350px;
+                                flex-shrink: 0;
+                        }
+
+                        .schedule-section {
+                                min-width: 715px;
+                        }
                 }
 
                 .course-box {
@@ -812,6 +861,10 @@
                                 <button type="button" id="cupo-toggle">Cupos: Sí</button>
                         </div>
                         <div class="plan-section" id="plan-container"></div>
+                        <div class="plan-credit">
+                                Copyright &copy; <a href="https://www.instagram.com/ignacio.apuy" target="_blank"
+                                        rel="noopener noreferrer">@ignacio.apuy</a>
+                        </div>
                 </div>
                 <div class="schedule-section">
                         <div id="schedule-alert" class="schedule-alert"></div>
