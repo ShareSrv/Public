@@ -27,6 +27,7 @@
                         margin: 0;
                         padding: 0;
                         font-family: sans-serif;
+      
                 }
 
                 body {
@@ -918,7 +919,7 @@
                         <p>3. Haz click o abre los cursos que deseas mostrar (El símbolo ">" a la izquierda debe ir
                                 hacia abajo).</p>
                         <p>4. Haz click derecho en cualquier lado y selecciona "Guardar como...".</p>
-                        <p>5. Descarga el archivo como Página Web o .html</p>
+                        <p>5. Descarga el archivo como Página Web Completa en formato .html</p>
                         <p>(Como referencia, el nombre suele ser: "Sistema de Matrícula del TEC.html")</p>
                         <p>6. Carga el archivo en esta página en la sección de "Semestre" de arriba.</p>
                         <br>
@@ -1204,7 +1205,7 @@
                                 const storedNumber = versionToNumber(storedVersion);
 
                                 if (!storedVersion || storedNumber < currentNumber) {
-                                        alert(`Se han hecho cambios importantes, favor limpiar datos antes de continuar.\nVersión ${APP_VERSION}`);
+                                        alert(`Importante, esta versión de la página es para pruebas.\nRecomiendo utilizar https://ignacioapuy.github.io/HorarioTEC/\nVersión ${APP_VERSION}`);
                                         localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
                                 }
                         } catch (e) {
@@ -2193,6 +2194,12 @@ mostrarMatricula();`;
                         quitarConexiones();
 
                         const svg = document.getElementById('plan-lines');
+                        const grid = document.getElementById('plan-grid');
+                        if(svg && grid) {
+                                svg.style.width = grid.scrollWidth + 'px';
+                                svg.style.height = grid.scrollHeight + 'px';
+                        }
+                        
                         const container = document.getElementById('modal-scroll-container');
                         const sourceBox = document.getElementById(`modal-course-${curso.id}`);
                         if (!sourceBox) return;
